@@ -12,7 +12,7 @@ const videoSlice = createSlice({
   reducers: {
     startRecording: (state, action) => {
       state.isRecording = true;
-      state.stream = action.payload;
+    //   state.stream = action.payload;
     },
     stopRecording: (state) => {
       state.isRecording = false;
@@ -20,9 +20,9 @@ const videoSlice = createSlice({
     setVideoUrl: (state, action) => {
       state.videoUrl = action.payload;
     },
-    resetStream: (state) => {
-      state.stream = null;
-    },
+    // resetStream: (state) => {
+    //   state.stream = null;
+    // },
   },
 });
 

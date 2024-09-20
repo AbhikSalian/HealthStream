@@ -6,7 +6,6 @@ import {
   setVideoUrl,
   resetStream,
 } from "./redux/videoSlice";
-import Webcam from "react-webcam";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -93,26 +92,27 @@ const App = () => {
         </button>
         <button disabled>Upload (Coming soon)</button>
       </div>
-
-      <div style={{ marginTop: "20px" }}>
-        <h2>Live Video Feed:</h2>
-        <video
-          ref={liveVideoRef}
-          style={{ width: "300px", border: "1px solid black" }}
-          autoPlay
-          muted
-          playsInline // Ensure video plays on mobile
-        />
-
+      {isRecording ? (
+        <div style={{ marginTop: "20px" }}>
+          <h2>Recording...</h2>
+          <video
+            ref={liveVideoRef}
+            style={{ width: "500px", border: "1px solid black" }}
+            autoPlay
+            muted
+            playsInline // Ensure video plays on mobile
+          />
+        </div>
+      ) : (
         <div style={{ marginTop: "20px" }}>
           {videoUrl && (
             <div>
               <h2>Recorded Video:</h2>
-              <video src={videoUrl} controls style={{ width: "300px" }} />
+              <video src={videoUrl} controls style={{ width: "500px" }} />
             </div>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
