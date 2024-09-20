@@ -81,20 +81,22 @@ const App = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Simple Video Recorder with Live Feed</h1>
+      <h1>Video Recorder</h1>
 
       <div>
-        <button onClick={handleStartRecording} disabled={isRecording}>
+        <button className="start" onClick={handleStartRecording} disabled={isRecording}>
           Start
         </button>
-        <button onClick={handleStopRecording} disabled={!isRecording}>
+        <button className="stop" onClick={handleStopRecording} disabled={!isRecording}>
           Stop
         </button>
-        <button disabled>Upload (Coming soon)</button>
+        <button className="upload" disabled>Upload</button>
       </div>
-      {isRecording ? (
+
+      {/* {isRecording ? ( */}
         <div style={{ marginTop: "20px" }}>
-          <h2>Recording...</h2>
+          <h2>Live cam</h2>
+          {/* {isRecording && ( */}
           <video
             ref={liveVideoRef}
             style={{ width: "500px", border: "1px solid black" }}
@@ -102,8 +104,10 @@ const App = () => {
             muted
             playsInline // Ensure video plays on mobile
           />
+        {/* )} */}
         </div>
-      ) : (
+        
+      {/* ) : ( */}
         <div style={{ marginTop: "20px" }}>
           {videoUrl && (
             <div>
@@ -112,7 +116,7 @@ const App = () => {
             </div>
           )}
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 };
