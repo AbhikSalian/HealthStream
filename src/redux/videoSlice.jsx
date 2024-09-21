@@ -27,5 +27,4 @@ const videoSlice = createSlice({
 });
 
 export const { startRecording, stopRecording, setVideoUrl, resetStream } = videoSlice.actions;
-
 export default videoSlice.reducer;

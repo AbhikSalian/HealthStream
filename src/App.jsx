@@ -6,29 +6,27 @@ import {
   setVideoUrl,
   resetStream,
 } from "./redux/videoSlice";
-
+import "./App.css";
 const App = () => {
   const dispatch = useDispatch();
   const { isRecording, videoUrl } = useSelector((state) => state.video);
   const mediaRecorderRef = useRef(null);
   const chunks = useRef([]);
-  const liveVideoRef = useRef(null); // For live video feed
-  const streamRef = useRef(null); // Store MediaStream here instead of Redux
+  const liveVideoRef = useRef(null); 
+  const streamRef = useRef(null); 
 
   const handleStartRecording = async () => {
     if (!isRecording) {
       try {
-        // Get access to the user's webcam and microphone
         const userStream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
-        streamRef.current = userStream; // Store stream in ref, not Redux
+        streamRef.current = userStream; 
 
-        // Set the live video feed in the video element
         if (liveVideoRef.current) {
           liveVideoRef.current.srcObject = userStream;
-          liveVideoRef.current.play(); // Ensure live video plays
+          liveVideoRef.current.play(); 
         }
 
         const mediaRecorder = new MediaRecorder(userStream);
@@ -41,20 +39,19 @@ const App = () => {
         mediaRecorder.onstop = () => {
           const blob = new Blob(chunks.current, { type: "video/webm" });
           const videoUrl = URL.createObjectURL(blob);
-          dispatch(setVideoUrl(videoUrl)); // Store video URL in Redux
-          chunks.current = []; // Clear chunks
+          dispatch(setVideoUrl(videoUrl)); 
+          chunks.current = []; 
         };
 
         mediaRecorder.start();
 
-        // Automatically stop recording after 10 seconds
         setTimeout(() => {
           if (mediaRecorder.state === "recording") {
             handleStopRecording();
           }
-        }, 10000); // 10 seconds
+        }, 10000); 
 
-        dispatch(startRecording()); // Update isRecording state in Redux
+        dispatch(startRecording()); 
       } catch (err) {
         console.error("Error accessing media devices.", err);
       }
@@ -63,18 +60,17 @@ const App = () => {
 
   const handleStopRecording = () => {
     if (isRecording && mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop(); // Stop recording
-      streamRef.current.getTracks().forEach((track) => track.stop()); // Stop the camera
-      dispatch(stopRecording()); // Update Redux
+      mediaRecorderRef.current.stop(); 
+      streamRef.current.getTracks().forEach((track) => track.stop()); 
+      dispatch(stopRecording()); 
     }
   };
 
-  // Cleanup stream on component unmount
   useEffect(() => {
     return () => {
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop()); // Stop the camera
-        dispatch(resetStream()); // Reset stream-related Redux state
+        streamRef.current.getTracks().forEach((track) => track.stop()); 
+        dispatch(resetStream()); 
       }
     };
   }, [dispatch]);
@@ -102,7 +98,7 @@ const App = () => {
             style={{ width: "500px", border: "1px solid black" }}
             autoPlay
             muted
-            playsInline // Ensure video plays on mobile
+            playsInline 
           />
         {/* )} */}
         </div>
