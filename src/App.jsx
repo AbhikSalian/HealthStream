@@ -13,6 +13,10 @@ function AppRoutes(){
             path:"*",
             element:<Login/>
         },
+        {
+            path:"/",
+            element:<Login/>
+        },
         {path:"/video-recorder",
             element:<VideoRecorder/>
         }

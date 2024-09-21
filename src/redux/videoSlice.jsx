@@ -20,9 +20,9 @@ const videoSlice = createSlice({
     setVideoUrl: (state, action) => {
       state.videoUrl = action.payload;
     },
-    // resetStream: (state) => {
-    //   state.stream = null;
-    // },
+    resetStream: (state) => {
+      state.stream = null;
+    },
   },
 });
 
