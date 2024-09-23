@@ -128,9 +128,6 @@ const VideoRecorder = () => {
         >
           Stop
         </button>
-        <button className="upload" disabled>
-          Upload
-        </button>
         <DriveUploader/>
       <button onClick={onLogoutSuccess}>Logout</button>
 

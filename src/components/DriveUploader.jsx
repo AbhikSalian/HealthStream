@@ -1,17 +1,23 @@
 // src/components/DriveUploader.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { gapi } from "gapi-script";
+import { signInWithGoogle } from "./auth"; // Import the auth module
 
 const DriveUploader = () => {
   const { videoUrl } = useSelector((state) => state.video);
+  const [accessToken, setAccessToken] = useState("");
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!videoUrl) {
       console.log("No video to upload");
       return;
     }
 
+    // Get the access token
+    const token = await signInWithGoogle();
+    setAccessToken(token);
+
+    // Fetch the video blob
     const blob = fetch(videoUrl).then((res) => res.blob());
 
     // Define upload logic with Google Drive API
@@ -25,8 +31,6 @@ const DriveUploader = () => {
         mimeType: "video/webm",
       };
 
-      const accessToken = gapi.auth.getToken().access_token; // Get the access token
-
       const formData = new FormData();
       formData.append(
         "metadata",
@@ -38,7 +42,7 @@ const DriveUploader = () => {
         "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
         {
           method: "POST",
-          headers: new Headers({ Authorization: "Bearer " + accessToken }),
+          headers: new Headers({ Authorization: "Bearer " + token }),
           body: formData,
         }
       )

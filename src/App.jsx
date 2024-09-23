@@ -5,8 +5,9 @@ import Login from "./components/Login";
 import { gapi } from "gapi-script";
 import { useEffect } from "react";
 import { BrowserRouter,Route,useRoutes,Router} from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 const clientId =
-  "943789416233-fv88mhvef702gb1pggc1s9ig9khk6bdu.apps.googleusercontent.com";
+  "865521704134-opjvrih0mesfenvll0etrupc7janke08.apps.googleusercontent.com";
 function AppRoutes(){
     const routesArray=[
         {
@@ -18,7 +19,11 @@ function AppRoutes(){
             element:<Login/>
         },
         {path:"/video-recorder",
-            element:<VideoRecorder/>
+            element:(
+              <PrivateRoute> {/* Protect the route */}
+                <VideoRecorder />
+              </PrivateRoute>
+            )
         }
     ];
     return useRoutes(routesArray);
@@ -28,11 +33,11 @@ const App = () => {
     function start() {
       gapi.client.init({
         clientId: clientId,
-        scope: "",
+        scope: "https://www.googleapis.com/auth/drive.file",
       });
     }
     gapi.load("client:auth2", start);
-  });
+  },[]);
   return(
     <BrowserRouter>
     <AppRoutes/>
