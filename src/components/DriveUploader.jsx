@@ -1,7 +1,6 @@
-// src/components/DriveUploader.jsx
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { signInWithGoogle } from "./auth"; // Import the auth module
+import { signInWithGoogle } from "./auth"; 
 
 const DriveUploader = () => {
   const { videoUrl } = useSelector((state) => state.video);
@@ -13,14 +12,11 @@ const DriveUploader = () => {
       return;
     }
 
-    // Get the access token
     const token = await signInWithGoogle();
     setAccessToken(token);
 
-    // Fetch the video blob
     const blob = fetch(videoUrl).then((res) => res.blob());
 
-    // Define upload logic with Google Drive API
     blob.then((videoBlob) => {
       const file = new File([videoBlob], "recorded_video.webm", {
         type: "video/webm",

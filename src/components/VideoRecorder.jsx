@@ -13,7 +13,7 @@ import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import DriveUploader from "./DriveUploader";
 const VideoRecorder = () => {
-  const navigate = useNavigate(); // Used to navigate after login success
+  const navigate = useNavigate(); 
 
   const dispatch = useDispatch();
   const { isRecording, videoUrl } = useSelector((state) => state.video);
@@ -75,25 +75,20 @@ const VideoRecorder = () => {
 
   const onLogoutSuccess = async () => {
     try {
-      // Stop the recording and clean up the stream if recording is active
       if (isRecording) {
         handleStopRecording();
       }
 
-      // Ensure all media tracks are stopped
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
 
-      // Clean up the Redux state
       dispatch(resetStream());
 
-      // Log the user out using googleLogout
       googleLogout();
       console.log("Logged out successfully");
 
-      // Navigate after cleanup
-      navigate("/"); // Redirect back to the login page after logout
+      navigate("/"); 
     } catch (e) {
       console.log("Logout error", e);
     }
