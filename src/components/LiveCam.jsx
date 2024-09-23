@@ -3,7 +3,7 @@ const LiveCam=({liveVideoRef})=>{
     return(
         <>
         <div style={{ marginTop: "20px" }}>
-        <h2>Live cam</h2>
+        <h2>Recording...</h2>
         {/* {isRecording && ( */}
         <Webcam
           ref={liveVideoRef}
