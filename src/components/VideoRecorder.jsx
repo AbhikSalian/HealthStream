@@ -12,6 +12,7 @@ import RecordedVid from "./RecordedVid";
 import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import DriveUploader from "./DriveUploader";
+import { logoutSuccess } from "../redux/authSlice";
 const VideoRecorder = () => {
   const navigate = useNavigate(); 
 
@@ -84,8 +85,9 @@ const VideoRecorder = () => {
       }
 
       dispatch(resetStream());
-
+      
       googleLogout();
+      dispatch(logoutSuccess());
       console.log("Logged out successfully");
 
       navigate("/"); 
