@@ -77,6 +77,7 @@ const DriveUploader = () => {
       );
       const data = await response.json();
       console.log("File uploaded successfully", data);
+      alert(`File uploaded successfully`)
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
     }
@@ -91,11 +92,14 @@ const DriveUploader = () => {
 
     try {
       const blob = await fetch(videoUrl).then((res) => res.blob());
-      const file = new File([blob], "recorded_video.webm", {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const fileName = `video-${timestamp}.webm`;
+      console.log(fileName);
+      const file = new File([blob], fileName, {
         type: "video/webm",
       });
 
-      await uploadFileToDrive(file, "recorded_video.webm");
+      await uploadFileToDrive(file, fileName);
     } catch (error) {
       console.error("Error uploading recorded video:", error);
     }
