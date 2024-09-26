@@ -1,9 +1,10 @@
+// StartRecordingButton.js
 import React from 'react';
 
 const StartRecordingButton = ({ onStart, disabled }) => {
   return (
     <button
-      className="btn btn-success mx-2"
+      className="btn btn-primary btn-sm mx-1" // Added 'btn-sm' for smaller size
       onClick={onStart}
       disabled={disabled}
     >

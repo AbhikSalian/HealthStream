@@ -141,9 +141,7 @@ const VideoRecorder = () => {
           />
         </div>
       </div>
-      {loading && <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>}
+     
       {feedbackMessage && <div className="alert alert-info mt-3">{feedbackMessage}</div>}
       <div className="video-container">
         {isRecording ? (
