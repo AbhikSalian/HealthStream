@@ -58,7 +58,7 @@ function Login() {
         onError: (error) => {
             console.log("Login failed", error);
         },
-        scope: 'https://www.googleapis.com/auth/drive.file' // Add scopes for Drive access
+        scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/calendar.events', // Add both Drive and Calendar scopes
     });
 
     return (

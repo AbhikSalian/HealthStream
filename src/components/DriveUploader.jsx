@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import CalendarUpload from "./CalendarUpload"; // Import CalendarUpload component
 
 const DriveUploader = () => {
   const { videoUrl } = useSelector((state) => state.video);
   const { token } = useSelector((state) => state.auth);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const [uploadDateTime, setUploadDateTime] = useState(null); // State for calendar
 
   const FOLDER_NAME = "video-recorder-uploads";
 
-  // Function to check if folder exists or create it
   const getOrCreateFolder = async () => {
     try {
-      // Search for the folder by name
       const searchResponse = await fetch(
         `https://www.googleapis.com/drive/v3/files?q=name='${FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder'`,
         {
@@ -20,18 +21,13 @@ const DriveUploader = () => {
         }
       );
       const searchData = await searchResponse.json();
-
-      // If folder already exists, return the folder ID
       if (searchData.files && searchData.files.length > 0) {
         return searchData.files[0].id;
       }
-
-      // If folder doesn't exist, create it
       const metadata = {
         name: FOLDER_NAME,
         mimeType: "application/vnd.google-apps.folder",
       };
-
       const createResponse = await fetch(
         "https://www.googleapis.com/drive/v3/files",
         {
@@ -50,13 +46,12 @@ const DriveUploader = () => {
     }
   };
 
-  // Common function to upload file to Google Drive
   const uploadFileToDrive = async (file, fileName) => {
     try {
       const folderId = await getOrCreateFolder();
       const metadata = {
         name: fileName,
-        parents: [folderId], // Specify the folder ID here
+        parents: [folderId],
         mimeType: file.type,
       };
 
@@ -77,47 +72,44 @@ const DriveUploader = () => {
       );
       const data = await response.json();
       console.log("File uploaded successfully", data);
-      alert(`File uploaded successfully`)
+
+      // Save filename and timestamp for calendar event
+      setUploadedFileName(fileName);
+      const timestamp = new Date().toISOString();
+      setUploadDateTime(timestamp);
+      
+      alert(`File uploaded successfully`);
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
     }
   };
 
-  // Function to upload the recorded video
   const handleRecordedVideoUpload = async () => {
     if (!videoUrl) {
       console.log("No recorded video to upload");
       return;
     }
-
     try {
       const blob = await fetch(videoUrl).then((res) => res.blob());
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const fileName = `video-${timestamp}.webm`;
-      console.log(fileName);
-      const file = new File([blob], fileName, {
-        type: "video/webm",
-      });
-
+      const file = new File([blob], fileName, { type: "video/webm" });
       await uploadFileToDrive(file, fileName);
     } catch (error) {
       console.error("Error uploading recorded video:", error);
     }
   };
 
-  // Function to handle file selection from local storage
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
 
-  // Function to upload the selected file from device
   const handleSelectedFileUpload = async () => {
     if (!selectedFile) {
       console.log("No file selected to upload");
       return;
     }
-
     try {
       await uploadFileToDrive(selectedFile, selectedFile.name);
     } catch (error) {
@@ -127,22 +119,20 @@ const DriveUploader = () => {
 
   return (
     <div>
-      {/* Button to upload the recorded video */}
       <button className="upload" onClick={handleRecordedVideoUpload} disabled={!videoUrl}>
         Upload Recorded Video
       </button>
 
-      {/* File input for selecting file from local storage */}
-      <input
-        type="file"
-        accept="video/*"
-        onChange={handleFileSelect}
-      />
+      <input type="file" accept="video/*" onChange={handleFileSelect} />
 
-      {/* Button to upload the selected file */}
       <button className="upload" onClick={handleSelectedFileUpload} disabled={!selectedFile}>
         Upload Video from Device
       </button>
+
+      {/* Conditionally render CalendarUpload if there's an uploaded file */}
+      {uploadedFileName && uploadDateTime && (
+        <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
+      )}
     </div>
   );
 };
