@@ -6,16 +6,17 @@ import {
   setVideoUrl,
   resetStream,
 } from "../redux/videoSlice";
-import "../App.css";
-import LiveCam from "./LiveCam";
-import RecordedVid from "./RecordedVid";
 import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import DriveUploader from "./DriveUploader";
 import { logoutSuccess } from "../redux/authSlice";
+import LiveCam from "./LiveCam";
+import RecordedVid from "./RecordedVid";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../App.css"; // Custom styles
+
 const VideoRecorder = () => {
   const navigate = useNavigate(); 
-
   const dispatch = useDispatch();
   const { isRecording, videoUrl } = useSelector((state) => state.video);
   const mediaRecorderRef = useRef(null);
@@ -85,7 +86,6 @@ const VideoRecorder = () => {
       }
 
       dispatch(resetStream());
-      
       googleLogout();
       dispatch(logoutSuccess());
       console.log("Logged out successfully");
@@ -95,7 +95,6 @@ const VideoRecorder = () => {
       console.log("Logout error", e);
     }
   };
-
 
   useEffect(() => {
     return () => {
@@ -107,34 +106,37 @@ const VideoRecorder = () => {
   }, [dispatch]);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Video Recorder</h1>
-
-      <div>
+    <div className="container mt-5 text-center">
+      <h1 className="mb-4">Video Recorder</h1>
+      <div className="mb-4">
         <button
-          className="start"
+          className="btn btn-success mx-2"
           onClick={handleStartRecording}
           disabled={isRecording}
         >
-          Start
+          Start Recording
         </button>
         <button
-          className="stop"
+          className="btn btn-danger mx-2"
           onClick={handleStopRecording}
           disabled={!isRecording}
         >
-          Stop
+          Stop Recording
         </button>
-        <DriveUploader/>
-      <button onClick={onLogoutSuccess}>Logout</button>
-
+        <DriveUploader />
+        <button 
+          className="btn btn-warning mx-2" 
+          onClick={onLogoutSuccess}>
+          Logout
+        </button>
       </div>
-
-      {isRecording ? (
-        <LiveCam liveVideoRef={liveVideoRef} />
-      ) : (
-        <RecordedVid videoUrl={videoUrl} />
-      )}
+      <div className="video-container">
+        {isRecording ? (
+          <LiveCam liveVideoRef={liveVideoRef} />
+        ) : (
+          <RecordedVid videoUrl={videoUrl} />
+        )}
+      </div>
     </div>
   );
 };
