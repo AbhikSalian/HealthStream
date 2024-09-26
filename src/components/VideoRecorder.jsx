@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   startRecording,
@@ -13,7 +13,7 @@ import { logoutSuccess } from "../redux/authSlice";
 import LiveCam from "./LiveCam";
 import RecordedVid from "./RecordedVid";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../App.css"; // Custom styles
+import "../App.css";
 
 const VideoRecorder = () => {
   const navigate = useNavigate(); 
@@ -23,9 +23,16 @@ const VideoRecorder = () => {
   const chunks = useRef([]);
   const liveVideoRef = useRef(null);
   const streamRef = useRef(null);
+  
+  // State for loading indicator and feedback messages
+  const [loading, setLoading] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const handleStartRecording = async () => {
     if (!isRecording) {
+      setLoading(true); // Show loading indicator
+      setFeedbackMessage(""); // Reset feedback message
+
       try {
         const userStream = await navigator.mediaDevices.getUserMedia({
           video: true,
@@ -50,6 +57,8 @@ const VideoRecorder = () => {
           const videoUrl = URL.createObjectURL(blob);
           dispatch(setVideoUrl(videoUrl));
           chunks.current = [];
+          setLoading(false); // Hide loading indicator
+          setFeedbackMessage("Recording stopped and video is ready."); // Feedback message
         };
 
         mediaRecorder.start();
@@ -61,8 +70,11 @@ const VideoRecorder = () => {
         }, 10000);
 
         dispatch(startRecording());
+        setFeedbackMessage("Recording started..."); // Feedback message
       } catch (err) {
         console.error("Error accessing media devices.", err);
+        setLoading(false); // Hide loading indicator on error
+        setFeedbackMessage("Error accessing media devices."); // Feedback message
       }
     }
   };
@@ -112,7 +124,7 @@ const VideoRecorder = () => {
         <button
           className="btn btn-success mx-2"
           onClick={handleStartRecording}
-          disabled={isRecording}
+          disabled={isRecording || loading}
         >
           Start Recording
         </button>
@@ -130,6 +142,10 @@ const VideoRecorder = () => {
           Logout
         </button>
       </div>
+      {loading && <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>}
+      {feedbackMessage && <div className="alert alert-info mt-3">{feedbackMessage}</div>}
       <div className="video-container">
         {isRecording ? (
           <LiveCam liveVideoRef={liveVideoRef} />

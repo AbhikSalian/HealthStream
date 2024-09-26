@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const CalendarUpload = ({ fileName, uploadDateTime }) => {
   const { token } = useSelector((state) => state.auth);
+  const [eventCreated, setEventCreated] = useState(false); // State to track event creation
 
   useEffect(() => {
     const createCalendarEvent = async () => {
@@ -33,6 +34,7 @@ const CalendarUpload = ({ fileName, uploadDateTime }) => {
 
         if (response.ok) {
           console.log("Event created successfully");
+          setEventCreated(true); // Mark the event as created
           alert(`Event created successfully`);
         } else {
           console.error("Failed to create event");
@@ -42,10 +44,11 @@ const CalendarUpload = ({ fileName, uploadDateTime }) => {
       }
     };
 
-    if (fileName && uploadDateTime) {
+    // Only create the event if it hasn't been created yet
+    if (fileName && uploadDateTime && !eventCreated) {
       createCalendarEvent();
     }
-  }, [fileName, uploadDateTime, token]);
+  }, [fileName, uploadDateTime, token, eventCreated]); // Add eventCreated to dependencies
 
   return null; // No UI is needed for this component
 };
