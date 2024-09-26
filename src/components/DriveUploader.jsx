@@ -1,59 +1,96 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-// import { signInWithGoogle } from "./auth";
+import { useSelector } from "react-redux";
 
 const DriveUploader = () => {
   const { videoUrl } = useSelector((state) => state.video);
-  // const [accessToken, setAccessToken] = useState("");
   const { token } = useSelector((state) => state.auth);
-  const handleUpload = async () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  // Function to upload the recorded video
+  const handleRecordedVideoUpload = async () => {
     if (!videoUrl) {
-      console.log("No video to upload");
+      console.log("No recorded video to upload");
       return;
     }
 
     try {
-      // const token = await signInWithGoogle();
-      console.log(token);
-
       const blob = await fetch(videoUrl).then((res) => res.blob());
       const file = new File([blob], "recorded_video.webm", {
         type: "video/webm",
       });
 
-      const metadata = {
-        name: "recorded_video.webm",
-        mimeType: "video/webm",
-      };
-
-      const formData = new FormData();
-      formData.append(
-        "metadata",
-        new Blob([JSON.stringify(metadata)], { type: "application/json" })
-      );
-      formData.append("file", file);
-
-      const response = await fetch(
-        "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-        {
-          method: "POST",
-          headers: new Headers({ Authorization: "Bearer " + token }),
-          body: formData,
-        }
-      );
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
-      console.log("File uploaded successfully", data);
+      await uploadFileToDrive(file, "recorded_video.webm");
     } catch (error) {
-      console.error("Error uploading file:", error);
+      console.error("Error uploading recorded video:", error);
     }
   };
 
+  // Function to handle file selection from local storage
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+
+  // Function to upload the selected file from device
+  const handleSelectedFileUpload = async () => {
+    if (!selectedFile) {
+      console.log("No file selected to upload");
+      return;
+    }
+
+    try {
+      await uploadFileToDrive(selectedFile, selectedFile.name);
+    } catch (error) {
+      console.error("Error uploading file from device:", error);
+    }
+  };
+
+  // Common function to upload file to Google Drive
+  const uploadFileToDrive = async (file, fileName) => {
+    const metadata = {
+      name: fileName,
+      mimeType: file.type,
+    };
+
+    const formData = new FormData();
+    formData.append(
+      "metadata",
+      new Blob([JSON.stringify(metadata)], { type: "application/json" })
+    );
+    formData.append("file", file);
+
+    const response = await fetch(
+      "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+      {
+        method: "POST",
+        headers: new Headers({ Authorization: "Bearer " + token }),
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    console.log("File uploaded successfully", data);
+  };
+
   return (
-    <button className="upload" onClick={handleUpload} disabled={!videoUrl}>
-      Upload to Google Drive
-    </button>
+    <div>
+      {/* Button to upload the recorded video */}
+      <button className="upload" onClick={handleRecordedVideoUpload} disabled={!videoUrl}>
+        Upload Recorded Video
+      </button>
+
+      {/* File input for selecting file from local storage */}
+      <input
+        type="file"
+        accept="video/*"
+        onChange={handleFileSelect}
+      />
+
+      {/* Button to upload the selected file */}
+      <button className="upload" onClick={handleSelectedFileUpload} disabled={!selectedFile}>
+        Upload Video from Device
+      </button>
+    </div>
   );
 };
 
