@@ -120,38 +120,44 @@ const VideoRecorder = () => {
   return (
     <div className="container mt-5 text-center">
       <h1 className="mb-4">Video Recorder</h1>
-      <div className="mb-4">
-        <button
-          className="btn btn-success mx-2"
-          onClick={handleStartRecording}
-          disabled={isRecording || loading}
-        >
-          Start Recording
-        </button>
-        <button
-          className="btn btn-danger mx-2"
-          onClick={handleStopRecording}
-          disabled={!isRecording}
-        >
-          Stop Recording
-        </button>
-        <DriveUploader />
-        <button 
-          className="btn btn-warning mx-2" 
-          onClick={onLogoutSuccess}>
-          Logout
-        </button>
-      </div>
-      {loading && <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>}
-      {feedbackMessage && <div className="alert alert-info mt-3">{feedbackMessage}</div>}
-      <div className="video-container">
-        {isRecording ? (
-          <LiveCam liveVideoRef={liveVideoRef} />
-        ) : (
-          <RecordedVid videoUrl={videoUrl} />
-        )}
+      <div className="row">
+        <div className="col-md-3">
+          <div className="d-flex flex-column align-items-center">
+            <button
+              className="btn btn-success mb-2"
+              onClick={handleStartRecording}
+              disabled={isRecording || loading}
+            >
+              Start Recording
+            </button>
+            <button
+              className="btn btn-danger mb-2"
+              onClick={handleStopRecording}
+              disabled={!isRecording}
+            >
+              Stop Recording
+            </button>
+            <DriveUploader />
+            <button 
+              className="btn btn-warning mb-2" 
+              onClick={onLogoutSuccess}>
+              Logout
+            </button>
+            {loading && <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>}
+            {feedbackMessage && <div className="alert alert-info mt-3">{feedbackMessage}</div>}
+          </div>
+        </div>
+        <div className="col-md-9">
+          <div className="video-container">
+            {isRecording ? (
+              <LiveCam liveVideoRef={liveVideoRef} />
+            ) : (
+              <RecordedVid videoUrl={videoUrl} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
