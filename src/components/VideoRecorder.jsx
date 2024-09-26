@@ -15,6 +15,11 @@ import RecordedVid from "./RecordedVid";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../App.css";
 
+// Import new button components
+import StartRecordingButton from "./StartRecordingButton";
+import StopRecordingButton from "./StopRecordingButton";
+import LogoutButton from "./LogoutButton";
+
 const VideoRecorder = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch();
@@ -121,26 +126,18 @@ const VideoRecorder = () => {
     <div className="container mt-5 text-center">
       <h1 className="mb-4">Video Recorder</h1>
       <div className="mb-4">
-        <button
-          className="btn btn-success mx-2"
-          onClick={handleStartRecording}
-          disabled={isRecording || loading}
-        >
-          Start Recording
-        </button>
-        <button
-          className="btn btn-danger mx-2"
-          onClick={handleStopRecording}
-          disabled={!isRecording}
-        >
-          Stop Recording
-        </button>
+        <StartRecordingButton 
+          onStart={handleStartRecording} 
+          disabled={isRecording || loading} 
+        />
+        <StopRecordingButton 
+          onStop={handleStopRecording} 
+          disabled={!isRecording} 
+        />
         <DriveUploader />
-        <button 
-          className="btn btn-warning mx-2" 
-          onClick={onLogoutSuccess}>
-          Logout
-        </button>
+        <LogoutButton 
+          onLogout={onLogoutSuccess} 
+        />
       </div>
       {loading && <div className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
