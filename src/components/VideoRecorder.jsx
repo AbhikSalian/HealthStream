@@ -126,18 +126,20 @@ const VideoRecorder = () => {
     <div className="container mt-5 text-center">
       <h1 className="mb-4">Video Recorder</h1>
       <div className="mb-4">
-        <StartRecordingButton 
-          onStart={handleStartRecording} 
-          disabled={isRecording || loading} 
-        />
-        <StopRecordingButton 
-          onStop={handleStopRecording} 
-          disabled={!isRecording} 
-        />
-        <DriveUploader />
-        <LogoutButton 
-          onLogout={onLogoutSuccess} 
-        />
+        <div className="d-flex justify-content-center mb-3">
+          <StartRecordingButton 
+            onStart={handleStartRecording} 
+            disabled={isRecording || loading} 
+          />
+          <StopRecordingButton 
+            onStop={handleStopRecording} 
+            disabled={!isRecording} 
+          />
+          <DriveUploader />
+          <LogoutButton 
+            onLogout={onLogoutSuccess} 
+          />
+        </div>
       </div>
       {loading && <div className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
