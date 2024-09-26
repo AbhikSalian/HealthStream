@@ -124,14 +124,14 @@ const VideoRecorder = () => {
         <div className="col-md-3">
           <div className="d-flex flex-column align-items-center">
             <button
-              className="btn btn-success mb-2"
+              className="btn btn-success mb-3" // Increased margin-bottom
               onClick={handleStartRecording}
               disabled={isRecording || loading}
             >
               Start Recording
             </button>
             <button
-              className="btn btn-danger mb-2"
+              className="btn btn-danger mb-3" // Increased margin-bottom
               onClick={handleStopRecording}
               disabled={!isRecording}
             >
@@ -139,7 +139,7 @@ const VideoRecorder = () => {
             </button>
             <DriveUploader />
             <button 
-              className="btn btn-warning mb-2" 
+              className="btn btn-warning mb-3" // Increased margin-bottom
               onClick={onLogoutSuccess}>
               Logout
             </button>

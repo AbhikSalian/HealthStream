@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CalendarUpload from "./CalendarUpload"; // Import CalendarUpload component
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DriveUploader = () => {
   const { videoUrl } = useSelector((state) => state.video);
@@ -119,13 +120,13 @@ const DriveUploader = () => {
 
   return (
     <div>
-      <button className="upload" onClick={handleRecordedVideoUpload} disabled={!videoUrl}>
+      <button className="upload btn mb-3" onClick={handleRecordedVideoUpload} disabled={!videoUrl}>
         Upload Recorded Video
       </button>
 
       <input type="file" accept="video/*" onChange={handleFileSelect} />
 
-      <button className="upload" onClick={handleSelectedFileUpload} disabled={!selectedFile}>
+      <button className="upload btn mb-3" onClick={handleSelectedFileUpload} disabled={!selectedFile}>
         Upload Video from Device
       </button>
 
