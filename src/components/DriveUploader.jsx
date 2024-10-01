@@ -74,7 +74,6 @@ const DriveUploader = () => {
       const data = await response.json();
       console.log("File uploaded successfully", data);
 
-      // Save filename and timestamp for calendar event
       setUploadedFileName(fileName);
       const timestamp = new Date().toISOString();
       setUploadDateTime(timestamp);
@@ -130,7 +129,6 @@ const DriveUploader = () => {
         Upload Video from Device
       </button>
 
-      {/* Conditionally render CalendarUpload if there's an uploaded file */}
       {uploadedFileName && uploadDateTime && (
         <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
       )}

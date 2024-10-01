@@ -15,7 +15,9 @@ const CalendarUpload = ({ fileName, uploadDateTime }) => {
             timeZone: "UTC",
           },
           end: {
-            dateTime: new Date(new Date(uploadDateTime).getTime() + 30 * 60 * 1000).toISOString(), // 30 min duration
+            dateTime: new Date(
+              new Date(uploadDateTime).getTime() + 30 * 60 * 1000
+            ).toISOString(), // 30 min duration
             timeZone: "UTC",
           },
         };

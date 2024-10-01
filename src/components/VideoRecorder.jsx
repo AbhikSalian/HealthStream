@@ -14,12 +14,6 @@ import LiveCam from "./LiveCam";
 import RecordedVid from "./RecordedVid";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../App.css";
-
-// Import new button components
-import StartRecordingButton from "./StartRecordingButton";
-import StopRecordingButton from "./StopRecordingButton";
-import LogoutButton from "./LogoutButton";
-
 const VideoRecorder = () => {
   const navigate = useNavigate(); 
   const dispatch = useDispatch();
@@ -29,14 +23,13 @@ const VideoRecorder = () => {
   const liveVideoRef = useRef(null);
   const streamRef = useRef(null);
   
-  // State for loading indicator and feedback messages
   const [loading, setLoading] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const handleStartRecording = async () => {
     if (!isRecording) {
-      setLoading(true); // Show loading indicator
-      setFeedbackMessage(""); // Reset feedback message
+      setLoading(true);
+      setFeedbackMessage(""); 
 
       try {
         const userStream = await navigator.mediaDevices.getUserMedia({
@@ -62,7 +55,7 @@ const VideoRecorder = () => {
           const videoUrl = URL.createObjectURL(blob);
           dispatch(setVideoUrl(videoUrl));
           chunks.current = [];
-          setLoading(false); // Hide loading indicator
+          setLoading(false);
           setFeedbackMessage("Recording stopped and video is ready."); // Feedback message
         };
 
@@ -75,11 +68,11 @@ const VideoRecorder = () => {
         }, 10000);
 
         dispatch(startRecording());
-        setFeedbackMessage("Recording started..."); // Feedback message
+        setFeedbackMessage("Recording started...");
       } catch (err) {
         console.error("Error accessing media devices.", err);
-        setLoading(false); // Hide loading indicator on error
-        setFeedbackMessage("Error accessing media devices."); // Feedback message
+        setLoading(false); 
+        setFeedbackMessage("Error accessing media devices.");
       }
     }
   };
@@ -129,14 +122,14 @@ const VideoRecorder = () => {
         <div className="col-md-3">
           <div className="d-flex flex-column align-items-center">
             <button
-              className="btn btn-success mb-3" // Increased margin-bottom
+              className="btn btn-success mb-3"
               onClick={handleStartRecording}
               disabled={isRecording || loading}
             >
               Start Recording
             </button>
             <button
-              className="btn btn-danger mb-3" // Increased margin-bottom
+              className="btn btn-danger mb-3" 
               onClick={handleStopRecording}
               disabled={!isRecording}
             >
@@ -144,7 +137,7 @@ const VideoRecorder = () => {
             </button>
             <DriveUploader />
             <button 
-              className="btn btn-warning mb-3" // Increased margin-bottom
+              className="btn btn-warning mb-3"
               onClick={onLogoutSuccess}>
               Logout
             </button>
