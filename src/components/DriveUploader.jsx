@@ -79,6 +79,7 @@ const DriveUploader = () => {
       setUploadDateTime(timestamp);
       
       alert(`File uploaded successfully`);
+      
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
     }
