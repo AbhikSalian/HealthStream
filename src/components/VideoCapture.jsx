@@ -12,8 +12,8 @@ const handleStart=()=>{
         <h1 className="headerTitle">HealthStream</h1>
         <button className="logoutButton">Log out</button>
       </div>
-      <h2 className="mainTitle" onClick={()=>handleStart()}>Start Capturing the Video</h2>
-      <button className="captureButton">Start Capturing</button>
+      <h2 className="mainTitle" >Start Capturing the Video</h2>
+      <button className="captureButton" onClick={()=>handleStart()}>Start Capturing</button>
     </div>
   );
 };

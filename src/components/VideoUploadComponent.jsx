@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import './VideoUploadComponent.css'; 
+import { useLocation } from 'react-router-dom'; // Import useLocation
+import './VideoUploadComponent.css';
 
 const VideoUploadComponent = () => {
-  const [videoRecorded, setVideoRecorded] = useState(true);
+  const location = useLocation();
+  const { videoUrl } = location.state || {}; // Get the videoUrl from the location state
   const [showTrimModal, setShowTrimModal] = useState(false);
 
   const handleRetake = () => {
-    // setVideoRecorded(false);
     console.log('Retake clicked');
   };
 
@@ -37,8 +38,8 @@ const VideoUploadComponent = () => {
         <h1>HealthStream</h1>
         <button className="logout-button">Log out</button>
       </header>
-      
-      {videoRecorded && (
+
+      {videoUrl ? (
         <>
           <div className="top-buttons">
             <button className="button retake-button" onClick={handleRetake}>Retake</button>
@@ -46,14 +47,11 @@ const VideoUploadComponent = () => {
           </div>
 
           <div className="video-preview">
-            <img 
-              src="https://via.placeholder.com/300x400" 
-              alt="Video Thumbnail" 
-              className="video-thumbnail"
-            />
+            {/* Display the recorded video */}
+            <video src={videoUrl} controls className="video-element" />
             <h2>Video Recorded Successfully!</h2>
           </div>
-          
+
           <div className="submit-buttons">
             <button className="button trim-button" onClick={handleTrim}>Trim Video</button>
             <button className="button submit-button" onClick={handleSubmit}>Submit Video</button>
@@ -79,6 +77,8 @@ const VideoUploadComponent = () => {
             </div>
           )}
         </>
+      ) : (
+        <p>No video available</p>
       )}
     </div>
   );
