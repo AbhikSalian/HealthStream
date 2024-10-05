@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Import useLocation
 import './VideoUploadComponent.css';
-
+import Logout from './Logout';
+import { useNavigate } from 'react-router-dom';
 const VideoUploadComponent = () => {
+    const navigate=useNavigate();
   const location = useLocation();
   const { videoUrl } = location.state || {}; // Get the videoUrl from the location state
   const [showTrimModal, setShowTrimModal] = useState(false);
 
   const handleRetake = () => {
-    console.log('Retake clicked');
+    navigate('/video-capturing');
   };
 
   const handleUpload = () => {
@@ -36,7 +38,7 @@ const VideoUploadComponent = () => {
     <div className="video-upload-container">
       <header className="header">
         <h1>HealthStream</h1>
-        <button className="logout-button">Log out</button>
+        <Logout/>
       </header>
 
       {videoUrl ? (

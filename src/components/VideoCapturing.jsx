@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoCapturing.css";
 import Webcam from "react-webcam";
-
+import Logout from "./Logout";
 const VideoCapturing = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -48,8 +48,15 @@ const VideoCapturing = () => {
 
   const handleStopRecording = () => {
     if (isRecording && mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stop(); // Stop the media recorder
       setIsRecording(false);
+
+      // Stop the webcam stream to turn off the camera light
+      const stream = webcamRef.current.video.srcObject; // Access the media stream from the webcam ref
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop()); // Stop all tracks (audio & video)
+        webcamRef.current.video.srcObject = null; // Clear the stream reference
+      }
     }
   };
 
@@ -57,7 +64,7 @@ const VideoCapturing = () => {
     <div className="container">
       <div className="header">
         <h1 className="headerTitle">HealthStream</h1>
-        <button className="logoutButton">Log out</button>
+        <Logout/>
       </div>
       <div className="videoWrapper">
         <div className="videoPreview">
