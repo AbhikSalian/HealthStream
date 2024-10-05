@@ -1,6 +1,7 @@
 import React from 'react';
 import './VideoCapture.css'; 
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 const VideoCapture = () => {
 const navigate=useNavigate();
 const handleStart=()=>{
@@ -8,10 +9,11 @@ const handleStart=()=>{
 }
   return (
     <div className="container">
-      <div className="header">
+      {/* <div className="header">
         <h1 className="headerTitle">HealthStream</h1>
         <button className="logoutButton">Log out</button>
-      </div>
+      </div> */}
+      <Header/>
       <h2 className="mainTitle" >Start Capturing the Video</h2>
       <button className="captureButton" onClick={()=>handleStart()}>Start Capturing</button>
     </div>

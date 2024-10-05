@@ -3,8 +3,9 @@ import { useLocation } from "react-router-dom"; // Import useLocation
 import "./VideoUploadComponent.css";
 import Logout from "./Logout";
 import { useNavigate } from "react-router-dom";
-import {CalendarUpload} from "./CalendarUpload";
+import CalendarUpload from "./CalendarUpload";
 import { useSelector } from "react-redux";
+import Header from "./Header";
 const VideoUploadComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -124,14 +125,14 @@ const VideoUploadComponent = () => {
 
   return (
     <div className="video-upload-container">
-      <header className="header">
+      {/* <header className="header">
         <h1>HealthStream</h1>
         <Logout />
-      </header>
-
+      </header> */}
+      <Header/>
       {videoUrl ? (
         <>
-          <div className="top-buttons">
+          <div className="top-buttons" style={{ paddingTop: "60px" }}>
             <button className="button retake-button" onClick={handleRetake}>
               Retake
             </button>
@@ -191,7 +192,7 @@ const VideoUploadComponent = () => {
           )}
         </>
       ) : (
-        <p>No video available</p>
+        <p style={{ paddingTop: "60px" }}>No video available</p>
       )}
     </div>
   );

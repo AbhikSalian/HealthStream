@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./VideoCapturing.css";
 import Webcam from "react-webcam";
 import Logout from "./Logout";
+import Header from "./Header";
 const VideoCapturing = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -62,10 +63,11 @@ const VideoCapturing = () => {
 
   return (
     <div className="container">
-      <div className="header">
+      {/* <div className="header">
         <h1 className="headerTitle">HealthStream</h1>
         <Logout/>
-      </div>
+      </div> */}
+      <Header/>
       <div className="videoWrapper">
         <div className="videoPreview">
           {isRecording ? (

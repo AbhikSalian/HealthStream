@@ -1,0 +1,33 @@
+/* Header.css */
+.header {
+    position: fixed; /* Fixed position to stay at the top */
+    top: 0; /* Aligns to the top */
+    left: 0; /* Aligns to the left */
+    right: 0; /* Aligns to the right */
+    background-color: #fff; /* Background color */
+    padding: 1rem; /* Padding for the header */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    z-index: 1000; /* Stays above other content */
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+  }
+  
+  h1 {
+    margin: 0; /* Remove default margin for the header */
+    font-size: 24px; /* Base font size */
+  }
+  
+  /* Media Query for Responsiveness */
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 20px; /* Smaller font size on small screens */
+    }
+    .header {
+      flex-direction: column; /* Stack items vertically */
+      align-items: flex-start; /* Align items to the start */
+    }
+  }
+  
+  /* Add any additional styles for the Logout button here */
+  
