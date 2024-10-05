@@ -1,5 +1,6 @@
 import React from 'react';
 import './HealthStream.css'; 
+import Logout from './Logout';
 import { useNavigate } from 'react-router-dom';
 const HealthStream = () => {
     const navigate=useNavigate();
@@ -8,7 +9,8 @@ const HealthStream = () => {
     }
   return (
     <div className="container">
-      <button className="logoutButton">Log out</button>
+      {/* <button className="logoutButton">Log out</button> */}
+      <Logout/>
       <h1 className="title">Welcome to HealthStream</h1>
       <div className="buttonContainer">
         <button className="actionButton" onClick={()=>handleRecord()}>Record a video</button>

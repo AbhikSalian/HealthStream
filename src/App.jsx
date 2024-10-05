@@ -16,13 +16,13 @@ function AppRoutes(){
     const routesArray=[
         {
             path:"*",
-            // element:<Login/>
-            element:<HealthStream/>
+            element:<Login/>
+            // element:<HealthStream/>
         },
         {
             path:"/",
-            // element:<Login/>
-            element: <HealthStream/>
+            element:<Login/>
+            // element: <HealthStream/>
         },
         {path:"/video-recorder",
             element:(
@@ -30,6 +30,10 @@ function AppRoutes(){
                 <VideoRecorder />
               </PrivateRoute>
             )
+        },
+        {
+          path:"/home",
+          element:<HealthStream/>
         },
         {path:"/video-capture",
           element:<VideoCapture/>

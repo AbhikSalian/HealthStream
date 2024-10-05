@@ -53,7 +53,7 @@ function Login() {
                 token: tokenResponse.access_token, // This is the OAuth access token
             }));
 
-            navigate('/video-recorder');
+            navigate('/home');
         },
         onError: (error) => {
             console.log("Login failed", error);

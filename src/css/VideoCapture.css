@@ -1,0 +1,95 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    position: absolute;
+    top: 20px;
+  }
+  
+  .headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .logoutButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+  }
+  
+  .mainTitle {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin: 100px 0 20px 0;
+    color: #555;
+  }
+  
+  .captureButton {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto;
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  @media (max-width: 767px) {
+    .logoutButton {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  
+    .headerTitle {
+      font-size: 20px;
+    }
+  
+    .mainTitle {
+      font-size: 22px;
+    }
+  
+    .captureButton {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .headerTitle {
+      font-size: 28px;
+    }
+  
+    .mainTitle {
+      font-size: 36px;
+    }
+  
+    .captureButton {
+      padding: 20px 40px;
+      font-size: 18px;
+    }
+  }
+  
