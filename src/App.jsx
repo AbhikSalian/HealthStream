@@ -6,24 +6,41 @@ import { gapi } from "gapi-script";
 import { useEffect } from "react";
 import { BrowserRouter,Route,useRoutes,Router} from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
+import HealthStream from "./components/HealthStream";
+import VideoCapture from "./components/VideoCapture";
+import VideoCapturing from "./components/VideoCapturing";
+import VideoUploadComponent from "./components/VideoUploadComponent";
 const clientId =
   "865521704134-opjvrih0mesfenvll0etrupc7janke08.apps.googleusercontent.com";
 function AppRoutes(){
     const routesArray=[
         {
             path:"*",
-            element:<Login/>
+            // element:<Login/>
+            element:<HealthStream/>
         },
         {
             path:"/",
-            element:<Login/>
+            // element:<Login/>
+            element: <HealthStream/>
         },
         {path:"/video-recorder",
             element:(
-              <PrivateRoute> {/* Protect the route */}
+              <PrivateRoute> 
                 <VideoRecorder />
               </PrivateRoute>
             )
+        },
+        {path:"/video-capture",
+          element:<VideoCapture/>
+        },
+        {
+          path:"/video-capturing",
+          element:<VideoCapturing/>
+        },
+        {
+          path:"/video-upload",
+          element:<VideoUploadComponent/>
         }
     ];
     return useRoutes(routesArray);
@@ -42,6 +59,7 @@ const App = () => {
     <BrowserRouter>
     <AppRoutes/>
     </BrowserRouter>
+    
   );
 };
 export default App;
