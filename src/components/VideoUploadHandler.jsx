@@ -50,6 +50,7 @@ const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
       console.log("File uploaded successfully", data);
 
       onUploadSuccess(fileName);
+      alert(`Video uploaded to drive`);
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
     }

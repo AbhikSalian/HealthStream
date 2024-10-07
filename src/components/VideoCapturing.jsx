@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoCapturing.css";
 import Webcam from "react-webcam";
@@ -50,14 +50,20 @@ const VideoCapturing = () => {
     if (isRecording && mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-
-      const stream = webcamRef.current.video.srcObject;
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        webcamRef.current.video.srcObject = null;
-      }
     }
   };
+
+  // Cleanup function to stop the webcam when unmounting
+  useEffect(() => {
+    return () => {
+      const stream = webcamRef.current?.video.srcObject;
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop()); // Stop each track
+        webcamRef.current.video.srcObject = null; // Clear the source object
+        console.log("Webcam stopped");
+      }
+    };
+  }, []);
 
   return (
     <div className="container">
