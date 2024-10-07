@@ -14,21 +14,14 @@ const VideoUploadComponent = () => {
   const { videoUrl } = location.state || {};
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState(null);
-  const [uploadDateTime, setUploadDateTime] = useState(null); // State for upload time
   const [mediaStream, setMediaStream] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [uploading, setUploading] = useState(false); 
+  const [uploadDateTime, setUploadDateTime] = useState(null); // New state for upload time
 
   const { handleRecordedVideoUpload } = VideoUploadHandler({
     videoUrl,
     onUploadSuccess: (fileName) => {
       setUploadedFileName(fileName);
-      setUploadDateTime(new Date().toISOString()); // Set current date and time
-      setUploading(false);
-    },
-    onUploadError: (error) => {
-      setErrorMessage("Upload failed: " + error.message);
-      setUploading(false);
+      setUploadDateTime(new Date().toISOString()); // Set upload time on success
     },
   });
 
@@ -43,11 +36,9 @@ const VideoUploadComponent = () => {
     setShowTrimModal(false);
   };
 
-  const handleSubmit = () => {
-    setUploading(true);
-    handleRecordedVideoUpload(); 
-  };
+  const handleSubmit = () => console.log("Submit Video clicked");
 
+  // Start camera when component mounts
   useEffect(() => {
     const startCamera = async () => {
       try {
@@ -78,20 +69,18 @@ const VideoUploadComponent = () => {
       <Header />
       {videoUrl ? (
         <>
-          <VideoActions onRetake={handleRetake} onUpload={handleSubmit} />
+          <VideoActions onRetake={handleRetake} onUpload={handleRecordedVideoUpload} />
           <VideoPreview videoUrl={videoUrl} />
           <div className="submit-buttons">
             <button className="button trim-button" onClick={handleTrim}>
               Trim Video
             </button>
-            <button className="button submit-button" onClick={handleSubmit} disabled={uploading}>
-              {uploading ? "Uploading..." : "Submit Video"}
+            <button className="button submit-button" onClick={handleSubmit}>
+              Submit Video
             </button>
           </div>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <TrimModal show={showTrimModal} onClose={closeTrimModal} onTrim={trimVideo} />
-          
-          {/* Calendar Upload Component */}
+          {/* Add CalendarUpload component with props */}
           {uploadedFileName && uploadDateTime && (
             <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
           )}
