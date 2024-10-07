@@ -1,33 +1,47 @@
-/* Header.css */
 .header {
-    position: fixed; /* Fixed position to stay at the top */
-    top: 0; /* Aligns to the top */
-    left: 0; /* Aligns to the left */
-    right: 0; /* Aligns to the right */
-    background-color: #fff; /* Background color */
-    padding: 1rem; /* Padding for the header */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    z-index: 1000; /* Stays above other content */
-    display: flex; /* Flexbox for alignment */
-    justify-content: space-between; /* Space between items */
-    align-items: center; /* Center items vertically */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between; /* Distributes space between title and button */
+  align-items: center; /* Aligns items vertically in the center */
+}
+
+.title {
+  font-size: 24px;
+  margin: 0;
+}
+
+button.logout-btn {
+  padding: 0.5rem 0.5rem;
+  font-size: 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: row; /* Keeps them in one line */
+    justify-content: space-between;
+    align-items: center;
   }
-  
-  h1 {
-    margin: 0; /* Remove default margin for the header */
-    font-size: 24px; /* Base font size */
+  button.logout-btn {
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    border-top: 10px;
+    background-color: white;
+    color: red;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
   }
-  
-  /* Media Query for Responsiveness */
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 20px; /* Smaller font size on small screens */
-    }
-    .header {
-      flex-direction: column; /* Stack items vertically */
-      align-items: flex-start; /* Align items to the start */
-    }
-  }
-  
-  /* Add any additional styles for the Logout button here */
-  
+}
