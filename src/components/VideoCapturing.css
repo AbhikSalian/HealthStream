@@ -43,17 +43,26 @@
   }
 }
 
-.startButton, .stopButton {
+.startButton{
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #2f9e38;
   color: white;
   border: none;
   border-radius: 5px;
 }
-
+.stopButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #961919;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
 .statusText {
   margin-top: 10px;
   font-size: 18px;
