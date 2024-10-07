@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoCapturing.css";
 import Webcam from "react-webcam";
-import Logout from "./Logout";
 import Header from "./Header";
+
 const VideoCapturing = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -35,7 +35,6 @@ const VideoCapturing = () => {
         setVideoUrl(videoUrl);
         chunks.current = [];
 
-        // Navigate to /video-upload and pass the video URL as state
         navigate("/video-upload", { state: { videoUrl } });
       };
 
@@ -49,25 +48,20 @@ const VideoCapturing = () => {
 
   const handleStopRecording = () => {
     if (isRecording && mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop(); // Stop the media recorder
+      mediaRecorderRef.current.stop();
       setIsRecording(false);
 
-      // Stop the webcam stream to turn off the camera light
-      const stream = webcamRef.current.video.srcObject; // Access the media stream from the webcam ref
+      const stream = webcamRef.current.video.srcObject;
       if (stream) {
-        stream.getTracks().forEach(track => track.stop()); // Stop all tracks (audio & video)
-        webcamRef.current.video.srcObject = null; // Clear the stream reference
+        stream.getTracks().forEach(track => track.stop());
+        webcamRef.current.video.srcObject = null;
       }
     }
   };
 
   return (
     <div className="container">
-      {/* <div className="header">
-        <h1 className="headerTitle">HealthStream</h1>
-        <Logout/>
-      </div> */}
-      <Header/>
+      <Header />
       <div className="videoWrapper">
         <div className="videoPreview">
           {isRecording ? (
