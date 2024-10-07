@@ -4,9 +4,11 @@ import VideoActions from "./VideoActions";
 import VideoPreview from "./VideoPreview";
 import TrimModal from "./TrimModal";
 import VideoUploadHandler from "./VideoUploadHandler";
-import CalendarUpload from "./CalendarUpload"; // Import CalendarUpload
+import CalendarUpload from "./CalendarUpload"; 
 import Header from "./Header";
-import "./VideoUploadComponent.css";
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg"; // Import ffmpeg
+
+const ffmpeg = createFFmpeg({ log: true });
 
 const VideoUploadComponent = () => {
   const navigate = useNavigate();
@@ -15,13 +17,14 @@ const VideoUploadComponent = () => {
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [mediaStream, setMediaStream] = useState(null);
-  const [uploadDateTime, setUploadDateTime] = useState(null); // New state for upload time
+  const [uploadDateTime, setUploadDateTime] = useState(null); 
+  const [trimmedVideoUrl, setTrimmedVideoUrl] = useState(videoUrl); // State for trimmed video
 
   const { handleRecordedVideoUpload } = VideoUploadHandler({
-    videoUrl,
+    videoUrl: trimmedVideoUrl, // Use trimmed video URL for upload
     onUploadSuccess: (fileName) => {
       setUploadedFileName(fileName);
-      setUploadDateTime(new Date().toISOString()); // Set upload time on success
+      setUploadDateTime(new Date().toISOString());
     },
   });
 
@@ -31,14 +34,28 @@ const VideoUploadComponent = () => {
 
   const handleTrim = () => setShowTrimModal(true);
   const closeTrimModal = () => setShowTrimModal(false);
-  const trimVideo = () => {
-    console.log("Video Trimmed");
-    setShowTrimModal(false);
+
+  const trimVideo = async (start, end) => {
+    if (!videoUrl) return;
+
+    if (!ffmpeg.isLoaded()) {
+      await ffmpeg.load();
+    }
+
+    const fileName = "input.webm";
+    ffmpeg.FS("writeFile", fileName, await fetchFile(videoUrl));
+
+    await ffmpeg.run("trim", fileName, start, end, "output.webm");
+
+    const data = ffmpeg.FS("readFile", "output.webm");
+
+    const newVideoUrl = URL.createObjectURL(new Blob([data.buffer], { type: "video/webm" }));
+    setTrimmedVideoUrl(newVideoUrl); // Set the new trimmed video URL
+    closeTrimModal();
   };
 
   const handleSubmit = () => console.log("Submit Video clicked");
 
-  // Start camera when component mounts
   useEffect(() => {
     const startCamera = async () => {
       try {
@@ -67,10 +84,10 @@ const VideoUploadComponent = () => {
   return (
     <div className="video-upload-container">
       <Header />
-      {videoUrl ? (
+      {trimmedVideoUrl ? ( // Use trimmed video URL
         <>
           <VideoActions onRetake={handleRetake} onUpload={handleRecordedVideoUpload} />
-          <VideoPreview videoUrl={videoUrl} />
+          <VideoPreview videoUrl={trimmedVideoUrl} /> {/* Display trimmed video */}
           <div className="submit-buttons">
             <button className="button trim-button" onClick={handleTrim}>
               Trim Video
@@ -80,7 +97,6 @@ const VideoUploadComponent = () => {
             </button>
           </div>
           <TrimModal show={showTrimModal} onClose={closeTrimModal} onTrim={trimVideo} />
-          {/* Add CalendarUpload component with props */}
           {uploadedFileName && uploadDateTime && (
             <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
           )}
