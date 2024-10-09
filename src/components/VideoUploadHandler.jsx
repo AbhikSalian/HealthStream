@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
+const VideoUploadHandler = ({ videoUrl, onUploadStart, onUploadSuccess, onUploadError, onUploadEnd }) => {
   const FOLDER_NAME = "video-recorder-uploads";
   const { token } = useSelector((state) => state.auth);
 
@@ -30,6 +30,7 @@ const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
       return createData.id;
     } catch (error) {
       console.error("Error in creating or fetching folder:", error);
+      onUploadError(); // Call error handler
     }
   };
 
@@ -49,10 +50,12 @@ const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
       const data = await response.json();
       console.log("File uploaded successfully", data);
 
-      onUploadSuccess(fileName);
-      alert(`Video uploaded to drive`);
+      onUploadSuccess(fileName); // Call success handler without alert
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
+      onUploadError(); // Call error handler
+    } finally {
+      onUploadEnd(); // Ensure to call this in finally
     }
   };
 
@@ -61,6 +64,7 @@ const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
       console.log("No recorded video to upload");
       return;
     }
+    onUploadStart(); // Start the upload process
     try {
       const blob = await fetch(videoUrl).then((res) => res.blob());
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
@@ -69,6 +73,9 @@ const VideoUploadHandler = ({ videoUrl, onUploadSuccess }) => {
       await uploadFileToDrive(file, fileName);
     } catch (error) {
       console.error("Error uploading recorded video:", error);
+      onUploadError(); // Call error handler
+    } finally {
+      onUploadEnd(); // Ensure to call this in finally
     }
   };
 

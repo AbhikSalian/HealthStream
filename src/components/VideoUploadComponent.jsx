@@ -4,7 +4,7 @@ import VideoActions from "./VideoActions";
 import VideoPreview from "./VideoPreview";
 import TrimModal from "./TrimModal";
 import VideoUploadHandler from "./VideoUploadHandler";
-import CalendarUpload from "./CalendarUpload"; // Import CalendarUpload
+import CalendarUpload from "./CalendarUpload"; 
 import Header from "./Header";
 import "./VideoUploadComponent.css";
 
@@ -15,14 +15,33 @@ const VideoUploadComponent = () => {
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [mediaStream, setMediaStream] = useState(null);
-  const [uploadDateTime, setUploadDateTime] = useState(null); // New state for upload time
+  const [uploadDateTime, setUploadDateTime] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(`Video recorded and ready to upload!`); // State for success message
+
+  const handleUploadStart = () => {
+    setSuccessMessage( `Uploading video...Please wait`); // Reset message on upload start
+  };
+
+  const handleUploadSuccess = (fileName) => {
+    setUploadedFileName(fileName);
+    setUploadDateTime(new Date().toISOString());
+    setSuccessMessage(`Video uploaded to Drive and event added successfully!`); // Set success message
+  };
+
+  const handleUploadError = () => {
+    setSuccessMessage("Error uploading video. Please try again."); // Set error message if needed
+  };
+
+  const handleUploadEnd = () => {
+    // Any cleanup or final actions can be done here
+  };
 
   const { handleRecordedVideoUpload } = VideoUploadHandler({
     videoUrl,
-    onUploadSuccess: (fileName) => {
-      setUploadedFileName(fileName);
-      setUploadDateTime(new Date().toISOString()); // Set upload time on success
-    },
+    onUploadStart: handleUploadStart,
+    onUploadSuccess: handleUploadSuccess,
+    onUploadError: handleUploadError,
+    onUploadEnd: handleUploadEnd,
   });
 
   const handleRetake = () => {
@@ -38,7 +57,6 @@ const VideoUploadComponent = () => {
 
   const handleSubmit = () => console.log("Submit Video clicked");
 
-  // Start camera when component mounts
   useEffect(() => {
     const startCamera = async () => {
       try {
@@ -71,6 +89,7 @@ const VideoUploadComponent = () => {
         <>
           <VideoActions onRetake={handleRetake} onUpload={handleRecordedVideoUpload} />
           <VideoPreview videoUrl={videoUrl} />
+          {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
           <div className="submit-buttons">
             <button className="button trim-button" onClick={handleTrim}>
               Trim Video
@@ -80,7 +99,6 @@ const VideoUploadComponent = () => {
             </button>
           </div>
           <TrimModal show={showTrimModal} onClose={closeTrimModal} onTrim={trimVideo} />
-          {/* Add CalendarUpload component with props */}
           {uploadedFileName && uploadDateTime && (
             <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
           )}
