@@ -5,7 +5,13 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0', // Allows access from other devices
-    port: 5173, // Ensure it's the correct port
+    host: '0.0.0.0',
+    port: 5173,
+    ...(import.meta.env.VITE_NODE_ENV === "production" && {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Resource-Policy': 'same-origin',
+      },
+    }),
   },
 });
