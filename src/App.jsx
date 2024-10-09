@@ -10,6 +10,7 @@ import HealthStream from "./components/HealthStream";
 import VideoCapture from "./components/VideoCapture";
 import VideoCapturing from "./components/VideoCapturing";
 import VideoUploadComponent from "./components/VideoUploadComponent";
+import UploadOptions from "./components/UploadOptions";
 const clientId =
   "865521704134-opjvrih0mesfenvll0etrupc7janke08.apps.googleusercontent.com";
 function AppRoutes(){
@@ -45,6 +46,10 @@ function AppRoutes(){
         {
           path:"/video-upload",
           element:<VideoUploadComponent/>
+        },
+        {
+          path:"/upload-options",
+          element:<UploadOptions/>
         }
     ];
     return useRoutes(routesArray);
@@ -72,7 +77,6 @@ const App = () => {
     <BrowserRouter>
     <AppRoutes/>
     </BrowserRouter>
-    
   );
 };
 export default App;

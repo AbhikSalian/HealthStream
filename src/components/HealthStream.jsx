@@ -17,7 +17,10 @@ const HealthStream = () => {
       </div>
       <p className="orText">or</p>
       <div className="buttonContainer">
-        <button className="actionButton">Upload existing</button>
+      <button className="actionButton" onClick={() => navigate('/upload-options')}>
+  Upload existing
+</button>
+
       </div>
     </div>
   );

@@ -1,0 +1,55 @@
+.upload-options-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    margin-top: 60px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Space between buttons */
+    /* margin-top: 60px; */
+  }
+  
+  .info-container {
+    margin-top: 20px;
+  }
+  
+  .upload-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #007bff; /* Primary color for the button */
+    color: white; /* Text color */
+    transition: background-color 0.3s; /* Transition effect for hover */
+  }
+  
+  .upload-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #28a745; /* Success color for the submit button */
+    color: white; /* Text color */
+    transition: background-color 0.3s; /* Transition effect for hover */
+  }
+  
+  .submit-button:hover {
+    background-color: #1e6e30; /* Darker shade on hover */
+  }
+  
+  p {
+    margin: 10px 0; /* Space between paragraph and buttons */
+  }
+  
