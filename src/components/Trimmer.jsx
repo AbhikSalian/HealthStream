@@ -1,7 +1,6 @@
-const Trimmer = () => {
-return(
-<>
-Hello World</>
-);
-}
+import React, {useEffect} from "react";
+const Trimmer = ({videoUrl}) => {
+    
+  
+};
 export default Trimmer;

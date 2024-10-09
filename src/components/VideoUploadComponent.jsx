@@ -104,7 +104,7 @@ const VideoUploadComponent = () => {
             {/* <button className="button trim-button" onClick={handleTrim}>
               Trim Video
             </button> */}
-            <Trimmer/>
+            {/* <Trimmer/> */}
             <button className="button submit-button" onClick={handleSubmit}>
               Submit Video
             </button>
