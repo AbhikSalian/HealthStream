@@ -39,7 +39,7 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../redux/authSlice';
+import { loginSuccess } from '../redux/authSlice'; 
 
 function Login() {
     const navigate = useNavigate();
