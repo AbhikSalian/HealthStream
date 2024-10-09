@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./VideoCapturing.css";
+import "../css/VideoCapturing.css";
 import Webcam from "react-webcam";
 import Header from "./Header";
 

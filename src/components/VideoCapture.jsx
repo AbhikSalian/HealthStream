@@ -1,5 +1,5 @@
 import React from 'react';
-import './VideoCapture.css'; 
+import '../css/VideoCapture.css'; 
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 const VideoCapture = () => {

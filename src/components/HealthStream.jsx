@@ -1,5 +1,5 @@
 import React from 'react';
-import './HealthStream.css'; 
+import '../css/HealthStream.css'; 
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 const HealthStream = () => {

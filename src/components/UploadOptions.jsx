@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Header from "./Header";
 import CalendarUpload from "./CalendarUpload";
-import "./UploadOptions.css";
+import "../css/UploadOptions.css";
 import useDrivePicker from "react-google-drive-picker";
 const UploadOptions = () => {
   const [videoFile, setVideoFile] = useState(null);

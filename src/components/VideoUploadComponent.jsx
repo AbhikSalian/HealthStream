@@ -6,7 +6,7 @@ import TrimModal from "./TrimModal";
 import VideoUploadHandler from "./VideoUploadHandler";
 import CalendarUpload from "./CalendarUpload"; 
 import Header from "./Header";
-import "./VideoUploadComponent.css";
+import "../css/VideoUploadComponent.css";
 
 const VideoUploadComponent = () => {
   const navigate = useNavigate();
