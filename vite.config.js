@@ -7,11 +7,11 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    ...(import.meta.env.VITE_NODE_ENV === "production" && {
-      headers: {
-        'Cross-Origin-Opener-Policy': 'same-origin',
-        'Cross-Origin-Resource-Policy': 'same-origin',
-      },
-    }),
+    // ...(import.meta.env.VITE_NODE_ENV === "production" && {
+    //   headers: {
+    //     'Cross-Origin-Opener-Policy': 'same-origin',
+    //     'Cross-Origin-Resource-Policy': 'same-origin',
+    //   },
+    // }),
   },
 });

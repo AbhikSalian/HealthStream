@@ -64,15 +64,15 @@ const App = () => {
     }
     gapi.load("client:auth2", start);
   },[]);
-  useEffect(() => {
-    if (import.meta.env.VITE_NODE_ENV === "development") {
-      const originalConsoleError = console.error;
-      console.error = (...args) => {
-        if (args[0].includes("Cross-Origin-Opener-Policy")) return;
-        originalConsoleError(...args);
-      };
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (import.meta.env.VITE_NODE_ENV === "development") {
+  //     const originalConsoleError = console.error;
+  //     console.error = (...args) => {
+  //       if (args[0].includes("Cross-Origin-Opener-Policy")) return;
+  //       originalConsoleError(...args);
+  //     };
+  //   }
+  // }, []);
   return(
     <BrowserRouter>
     <AppRoutes/>
