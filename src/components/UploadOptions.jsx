@@ -3,12 +3,14 @@ import { useSelector } from "react-redux";
 import Header from "./Header";
 import CalendarUpload from "./CalendarUpload";
 import './UploadOptions.css';
-// Component to handle the video upload logic
+
 const UploadOptions = () => {
   const [videoFile, setVideoFile] = useState(null);
   const { token } = useSelector((state) => state.auth);
   const [uploadedFileName, setUploadedFileName] = useState(null);
-  const [uploadDateTime, setUploadDateTime] = useState(null); // State for calendar
+  const [uploadDateTime, setUploadDateTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
 
   const FOLDER_NAME = "video-recorder-uploads";
 
@@ -48,6 +50,8 @@ const UploadOptions = () => {
   };
 
   const uploadFileToDrive = async (file, fileName) => {
+    setIsLoading(true); // Start loading
+    setUploadMessage(""); // Clear previous message
     try {
       const folderId = await getOrCreateFolder();
       const metadata = {
@@ -78,13 +82,15 @@ const UploadOptions = () => {
       const timestamp = new Date().toISOString();
       setUploadDateTime(timestamp);
 
-      alert(`File uploaded successfully`);
+      setUploadMessage("File uploaded and event created successfully"); // Set success message
     } catch (error) {
       console.error("Error uploading file to Drive:", error);
+      setUploadMessage("Error uploading file."); // Set error message
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
-  // Handle file selection from device
   const handleDeviceUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -104,7 +110,6 @@ const UploadOptions = () => {
     }
   };
 
-  // Simulate file selection from Google Drive
   const handleDriveUpload = () => {
     console.log("GDrive clicked");
   };
@@ -112,40 +117,41 @@ const UploadOptions = () => {
   return (
     <>
       <Header />
-    <div className="upload-options-container">
-      <div className="button-container">
-        <button
-          className="upload-button"
-          onClick={() => document.getElementById("fileInput").click()}
-        >
-          Upload from Device
-        </button>
-        <input
-          type="file"
-          id="fileInput"
-          style={{ display: "none" }}
-          accept="video/*"
-          onChange={handleDeviceUpload}
-        />
-        <button className="upload-button" onClick={handleDriveUpload}>
-          Upload from Google Drive
-        </button>
+      <div className="upload-options-container">
+        <div className="button-container">
+          <button
+            className="upload-button"
+            onClick={() => document.getElementById("fileInput").click()}
+          >
+            Upload from Device
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            accept="video/*"
+            onChange={handleDeviceUpload}
+          />
+          <button className="upload-button" onClick={handleDriveUpload}>
+            Upload from Google Drive
+          </button>
+        </div>
+        <div className="info-container">
+          <p>Selected Video: {videoFile ? videoFile.name : "No file selected"}</p>
+          <button className="submit-button" onClick={handleSelectedFileUpload}>
+            Upload to Google Drive
+          </button>
+          <button className="submit-button">Submit</button>
+        </div>
+        {uploadedFileName && uploadDateTime && (
+          <CalendarUpload
+            fileName={uploadedFileName}
+            uploadDateTime={uploadDateTime}
+          />
+        )}
+        {isLoading && <p>Uploading file... Please wait.</p>} {/* Loading message */}
+        {uploadMessage && <p>{uploadMessage}</p>} {/* Display upload message */}
       </div>
-      <div className="info-container">
-        <p>Selected Video: {videoFile ? videoFile.name : "No file selected"}</p>
-        <button className="submit-button" onClick={handleSelectedFileUpload}>
-          Upload to Google Drive
-        </button>
-        <button className="submit-button">Submit</button>{" "}
-        {/* Dummy button for now */}
-      </div>
-      {uploadedFileName && uploadDateTime && (
-        <CalendarUpload
-          fileName={uploadedFileName}
-          uploadDateTime={uploadDateTime}
-        />
-      )}
-    </div>
     </>
   );
 };

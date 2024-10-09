@@ -34,11 +34,11 @@ const Header = () => {
   };
 
   // Use useEffect to watch for auth changes and navigate when logged out
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/"); // Navigate only when logged out
-  //   }
-  // }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/"); // Navigate only when logged out
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <header className="header">

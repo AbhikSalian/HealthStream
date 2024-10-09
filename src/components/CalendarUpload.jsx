@@ -41,7 +41,7 @@ const CalendarUpload = ({ fileName, uploadDateTime }) => {
           console.log("Event created successfully");
           setEventCreated(true);
           eventCreatedRef.current = true; // Set the ref to true
-          alert(`Event created successfully`);
+          // alert(`Event created successfully`);
         } else {
           console.error("Failed to create event");
         }
