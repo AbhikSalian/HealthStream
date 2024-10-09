@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 import { stopRecording, resetStream } from "../redux/videoSlice";
 import { logoutSuccess } from "../redux/authSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,7 +46,7 @@ const Header = () => {
     <header className="header">
       <div className="title">HealthStream</div>  {/* Replacing h1 with div */}
       <div><button className="logout-btn" onClick={onLogoutSuccess}>
-      Logout
+      <FontAwesomeIcon icon={faArrowRightFromBracket} />
     </button></div>
     </header>
   );
