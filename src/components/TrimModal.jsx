@@ -1,6 +1,6 @@
 import React from "react";
 
-const TrimModal = ({ show, onClose, onTrim }) => {
+const TrimModal = ({ show, onClose, onTrim, video, setTrimStartTime, setTrimEndTime }) => {
   if (!show) return null;
 
   return (
@@ -13,11 +13,21 @@ const TrimModal = ({ show, onClose, onTrim }) => {
         <div className="trim-inputs">
           <div className="input-group">
             <label>Start time</label>
-            <input type="text" placeholder="mm:ss" defaultValue="00:00" />
+            <input 
+              type="text" 
+              placeholder="mm:ss" 
+              defaultValue="00:00" 
+              onChange={(e) => setTrimStartTime(e.target.value)} 
+            />
           </div>
           <div className="input-group">
             <label>End Time</label>
-            <input type="text" placeholder="mm:ss" defaultValue="00:10" />
+            <input 
+              type="text" 
+              placeholder="mm:ss" 
+              defaultValue="00:10" 
+              onChange={(e) => setTrimEndTime(e.target.value)} 
+            />
           </div>
         </div>
         <button className="trim-submit-button" onClick={onTrim}>

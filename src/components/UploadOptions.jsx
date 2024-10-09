@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Header from "./Header";
 import CalendarUpload from "./CalendarUpload";
+import VideoPreview from "./VideoPreview";
 import "../css/UploadOptions.css";
 import useDrivePicker from "react-google-drive-picker";
 const UploadOptions = () => {
   const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
   const { token } = useSelector((state) => state.auth);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [uploadDateTime, setUploadDateTime] = useState(null);
@@ -98,6 +100,7 @@ const UploadOptions = () => {
     const file = event.target.files[0];
     if (file) {
       setVideoFile(file);
+      setVideoPreview(URL.createObjectURL(file));
     }
   };
 
@@ -147,6 +150,8 @@ const UploadOptions = () => {
               // Create a File object from the Blob
               const file = new File([blob], fileName, { type: blob.type });
               setVideoFile(file);  // Set the selected file
+              const videoUrl = URL.createObjectURL(blob);
+            setVideoPreview(videoUrl);
               console.log("File fetched and set:", file);
             })
             .catch((error) => console.error("Error fetching file from Drive:", error));
@@ -179,9 +184,11 @@ const UploadOptions = () => {
           </button>
         </div>
         <div className="info-container">
-          <p>
-            Selected Video: {videoFile ? videoFile.name : "No file selected"}
-          </p>
+          {videoPreview ? ( // Use VideoPreview component
+            <VideoPreview videoUrl={videoPreview} />
+          ) : (
+            <p>No video selected</p>
+          )}
           <button className="submit-button" onClick={handleSelectedFileUpload}>
             Upload to Google Drive
           </button>
@@ -193,9 +200,8 @@ const UploadOptions = () => {
             uploadDateTime={uploadDateTime}
           />
         )}
-        {isLoading && <p>Uploading file... Please wait.</p>}{" "}
-        {/* Loading message */}
-        {uploadMessage && <p>{uploadMessage}</p>} {/* Display upload message */}
+        {isLoading && <p>Uploading file... Please wait.</p>}
+        {uploadMessage && <p>{uploadMessage}</p>}
       </div>
     </>
   );

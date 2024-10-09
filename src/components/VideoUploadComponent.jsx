@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import VideoActions from "./VideoActions";
 import VideoPreview from "./VideoPreview";
-import TrimModal from "./TrimModal";
 import VideoUploadHandler from "./VideoUploadHandler";
 import CalendarUpload from "./CalendarUpload"; 
 import Header from "./Header";
+import Trimmer from "./Trimmer";
 import "../css/VideoUploadComponent.css";
 
 const VideoUploadComponent = () => {
@@ -16,20 +16,24 @@ const VideoUploadComponent = () => {
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [mediaStream, setMediaStream] = useState(null);
   const [uploadDateTime, setUploadDateTime] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(`Video recorded and ready to upload!`); // State for success message
+  const [successMessage, setSuccessMessage] = useState(`Video recorded and ready to upload!`);
+  
+  // State to hold trim start and end times
+  const [trimStartTime, setTrimStartTime] = useState("00:00");
+  const [trimEndTime, setTrimEndTime] = useState("00:10");
 
   const handleUploadStart = () => {
-    setSuccessMessage( `Uploading video...Please wait`); // Reset message on upload start
+    setSuccessMessage(`Uploading video...Please wait`);
   };
 
   const handleUploadSuccess = (fileName) => {
     setUploadedFileName(fileName);
     setUploadDateTime(new Date().toISOString());
-    setSuccessMessage(`Video uploaded to Drive and event added successfully!`); // Set success message
+    setSuccessMessage(`Video uploaded to Drive and event added successfully!`);
   };
 
   const handleUploadError = () => {
-    setSuccessMessage("Error uploading video. Please try again."); // Set error message if needed
+    setSuccessMessage("Error uploading video. Please try again.");
   };
 
   const handleUploadEnd = () => {
@@ -50,8 +54,14 @@ const VideoUploadComponent = () => {
 
   const handleTrim = () => setShowTrimModal(true);
   const closeTrimModal = () => setShowTrimModal(false);
+
   const trimVideo = () => {
-    console.log("Video Trimmed");
+    console.log("Trimming video from:", trimStartTime, "to:", trimEndTime);
+    
+    // Here you would implement your video trimming logic
+    // For example, using a library like ffmpeg.js
+    // After trimming, you might update the videoUrl state or handle it accordingly.
+
     setShowTrimModal(false);
   };
 
@@ -89,16 +99,24 @@ const VideoUploadComponent = () => {
         <>
           <VideoActions onRetake={handleRetake} onUpload={handleRecordedVideoUpload} />
           <VideoPreview videoUrl={videoUrl} />
-          {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
+          {successMessage && <p className="success-message">{successMessage}</p>}
           <div className="submit-buttons">
-            <button className="button trim-button" onClick={handleTrim}>
+            {/* <button className="button trim-button" onClick={handleTrim}>
               Trim Video
-            </button>
+            </button> */}
+            <Trimmer/>
             <button className="button submit-button" onClick={handleSubmit}>
               Submit Video
             </button>
           </div>
-          <TrimModal show={showTrimModal} onClose={closeTrimModal} onTrim={trimVideo} />
+          {/* <TrimModal 
+            show={showTrimModal} 
+            onClose={closeTrimModal} 
+            onTrim={trimVideo} 
+            video={videoUrl}
+            setTrimStartTime={setTrimStartTime} 
+            setTrimEndTime={setTrimEndTime} 
+          /> */}
           {uploadedFileName && uploadDateTime && (
             <CalendarUpload fileName={uploadedFileName} uploadDateTime={uploadDateTime} />
           )}
