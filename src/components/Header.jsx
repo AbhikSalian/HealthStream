@@ -53,13 +53,13 @@ const Header = () => {
   return (
     <>
       <header className="header">
-        <div className="title element">HealthStream</div>
 
         <div className="back-btn">
           <button className="back-btn element" onClick={handleBack}>
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
         </div>
+        <div className="title-header element">HealthStream</div>
         <div className="element">
           <button className="logout-btn" onClick={onLogoutSuccess}>
             <FontAwesomeIcon icon={faArrowRightFromBracket} />

@@ -11,7 +11,7 @@ const HealthStream = () => {
     <div className="container">
       {/* <button className="logoutButton">Log out</button> */}
       <Header />
-      <h1 className="title">Welcome to HealthStream</h1>
+      <h1 className="title-home">Welcome to HealthStream</h1>
       <div className="buttonContainer">
         <button className="actionButton" onClick={() => handleRecord()}>
           Record a video

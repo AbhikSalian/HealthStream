@@ -12,14 +12,14 @@
   align-items: center; /* Aligns items vertically in the center */
 }
 
-.title {
+.title-header {
   font-size: 24px;
   margin: 0;
 }
 
 button.logout-btn {
   padding: 0.5rem 0.5rem;
-  font-size: 16px;
+  font-size: 24px;
   background-color: red;
   color: white;
   border: none;
@@ -50,7 +50,14 @@ button.back-btn{
     justify-content: right;
   }
   button.back-btn{
+    padding: 0.5rem 1rem;
+    font-size: 24px;
+    border-top: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    padding-left: 10px;
+    justify-content: left;
     background-color: white;
-    border: 0px;
   }
 }
