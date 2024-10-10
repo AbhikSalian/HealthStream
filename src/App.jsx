@@ -4,55 +4,59 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Login from "./components/Login";
 import { gapi } from "gapi-script";
 import { useEffect } from "react";
-import { BrowserRouter,Route,useRoutes,Router} from "react-router-dom";
+import { BrowserRouter, Route, useRoutes, Router } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import HealthStream from "./components/HealthStream";
 import VideoCapture from "./components/VideoCapture";
 import VideoCapturing from "./components/VideoCapturing";
 import VideoUploadComponent from "./components/VideoUploadComponent";
 import UploadOptions from "./components/UploadOptions";
+import VideoSubmitted from "./components/VideoSubmitted";
 const clientId =
   "865521704134-opjvrih0mesfenvll0etrupc7janke08.apps.googleusercontent.com";
-function AppRoutes(){
-    const routesArray=[
-        {
-            path:"*",
-            element:<Login/>
-            // element:<HealthStream/>
-        },
-        {
-            path:"/",
-            element:<Login/>
-            // element: <HealthStream/>
-        },
-        {path:"/video-recorder",
-            element:(
-              <PrivateRoute> 
-                <VideoRecorder />
-              </PrivateRoute>
-            )
-        },
-        {
-          path:"/home",
-          element:<HealthStream/>
-        },
-        {path:"/video-capture",
-          element:<VideoCapture/>
-        },
-        {
-          path:"/video-capturing",
-          element:<VideoCapturing/>
-        },
-        {
-          path:"/video-upload",
-          element:<VideoUploadComponent/>
-        },
-        {
-          path:"/upload-options",
-          element:<UploadOptions/>
-        }
-    ];
-    return useRoutes(routesArray);
+function AppRoutes() {
+  const routesArray = [
+    {
+      path: "*",
+      element: <Login />,
+      // element:<HealthStream/>
+    },
+    {
+      path: "/",
+      element: <Login />,
+      // element: <HealthStream/>
+    },
+    {
+      path: "/video-recorder",
+      element: (
+        <PrivateRoute>
+          <VideoRecorder />
+        </PrivateRoute>
+      ),
+    },
+    {
+      path: "/home",
+      element: <HealthStream />,
+    },
+    { path: "/video-capture", element: <VideoCapture /> },
+    {
+      path: "/video-capturing",
+      element: <VideoCapturing />,
+    },
+    {
+      path: "/video-upload",
+      element: <VideoUploadComponent />,
+    },
+    {
+      path: "/upload-options",
+      element: <UploadOptions />,
+    },
+    {
+      path: "/video-submitted",
+      element: <VideoSubmitted />,
+    },
+  ];
+  return useRoutes(routesArray);
 }
 const App = () => {
   useEffect(() => {
@@ -63,7 +67,7 @@ const App = () => {
       });
     }
     gapi.load("client:auth2", start);
-  },[]);
+  }, []);
   // useEffect(() => {
   //   if (import.meta.env.VITE_NODE_ENV === "development") {
   //     const originalConsoleError = console.error;
@@ -73,9 +77,9 @@ const App = () => {
   //     };
   //   }
   // }, []);
-  return(
+  return (
     <BrowserRouter>
-    <AppRoutes/>
+      <AppRoutes />
     </BrowserRouter>
   );
 };

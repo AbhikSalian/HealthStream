@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLaptop } from "@fortawesome/free-solid-svg-icons";
 import { faGoogleDrive } from "@fortawesome/free-brands-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 const UploadOptions = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
@@ -21,7 +22,7 @@ const UploadOptions = () => {
   const FOLDER_NAME = "video-recorder-uploads";
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const apiKey = import.meta.env.VITE_DEVELOPER_KEY;
-
+const navigate=useNavigate();
   const getOrCreateFolder = async () => {
     try {
       const searchResponse = await fetch(
@@ -168,7 +169,9 @@ const UploadOptions = () => {
       },
     });
   };
-
+const handleSubmit=()=>{
+navigate('/video-submitted');
+}
   return (
     <>
       <Header />
@@ -205,7 +208,7 @@ const UploadOptions = () => {
                 
                 Upload to <FontAwesomeIcon icon={faGoogleDrive} />
               </button>
-              <button className="submit-button"><FontAwesomeIcon icon={faCheck} /></button>
+              <button className="submit-button" onClick={handleSubmit}><FontAwesomeIcon icon={faCheck} /></button>
             </>
           ) : (
             <p className="success-message">No video selected</p>

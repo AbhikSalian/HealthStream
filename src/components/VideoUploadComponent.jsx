@@ -66,7 +66,7 @@ const VideoUploadComponent = () => {
     setShowTrimModal(false);
   };
 
-  const handleSubmit = () => console.log("Submit Video clicked");
+  const handleSubmit = () => navigate('/video-submitted');
 
   useEffect(() => {
     const startCamera = async () => {
