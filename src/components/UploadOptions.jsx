@@ -18,11 +18,12 @@ const UploadOptions = () => {
   const [uploadDateTime, setUploadDateTime] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // State for loading
   const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
-  const [openPicker, authResponse] = useDrivePicker();
+  const [showModal, setShowModal] = useState(false);
+  const [openPicker] = useDrivePicker();
   const FOLDER_NAME = "video-recorder-uploads";
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const apiKey = import.meta.env.VITE_DEVELOPER_KEY;
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const getOrCreateFolder = async () => {
     try {
       const searchResponse = await fetch(
@@ -122,7 +123,8 @@ const navigate=useNavigate();
   };
 
   const handleDriveUpload = () => {
-    console.log("GDrive clicked");
+    // setShowModal(true); // Show the modal when Drive upload is clicked
+
     openPicker({
       clientId: clientId,
       developerKey: apiKey,
@@ -131,52 +133,47 @@ const navigate=useNavigate();
       showUploadView: true,
       showUploadFolders: true,
       supportDrives: true,
-      multiselect: false, // Limit to one file for simplicity
+      multiselect: false,
       callbackFunction: (data) => {
         if (data.action === "cancel") {
           console.log("User clicked cancel/close button");
+          setShowModal(false); // Close modal if canceled
           return;
         }
 
         if (data.docs && data.docs.length > 0) {
-          const fileId = data.docs[0].id; // Get the selected file ID
-          const fileName = data.docs[0].name; // Get the selected file name
-          console.log(`File selected: ${fileName} (ID: ${fileId})`);
+          const fileId = data.docs[0].id;
+          const fileName = data.docs[0].name;
 
-          // Now fetch the file from Google Drive using the file ID
-          fetch(
-            `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
-            {
-              method: "GET",
-              headers: new Headers({
-                Authorization: "Bearer " + token,
-              }),
-            }
-          )
+          fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+            method: "GET",
+            headers: new Headers({
+              Authorization: "Bearer " + token,
+            }),
+          })
             .then((response) => response.blob())
             .then((blob) => {
-              // Create a File object from the Blob
               const file = new File([blob], fileName, { type: blob.type });
-              setVideoFile(file); // Set the selected file
+              setVideoFile(file);
               const videoUrl = URL.createObjectURL(blob);
               setVideoPreview(videoUrl);
               console.log("File fetched and set:", file);
+              setShowModal(false); // Close the modal after the file is set
             })
-            .catch((error) =>
-              console.error("Error fetching file from Drive:", error)
-            );
+            .catch((error) => console.error("Error fetching file from Drive:", error));
         }
       },
     });
   };
-const handleSubmit=()=>{
-navigate('/video-submitted');
-}
+
+  const handleSubmit = () => {
+    navigate("/video-submitted");
+  };
   return (
     <>
       <Header />
       <div className="upload-options-container">
-          <h3>Upload</h3>
+        <h3>Upload</h3>
         <div className="button-container">
           <button
             className="upload-button"
@@ -189,38 +186,67 @@ navigate('/video-submitted');
             id="fileInput"
             style={{ display: "none" }}
             accept="video/*"
-            onChange={handleDeviceUpload}
+            onChange={(event) => {
+              const file = event.target.files[0];
+              if (file) {
+                setVideoFile(file);
+                setVideoPreview(URL.createObjectURL(file));
+              }
+            }}
           />
           <button className="upload-button" onClick={handleDriveUpload}>
             From <FontAwesomeIcon icon={faGoogleDrive} />
           </button>
         </div>
+
         <div className="info-container">
-          {videoPreview ? ( // Use VideoPreview component
+          {videoPreview ? (
             <>
               <VideoPreview videoUrl={videoPreview} />
-              {isLoading && <p className="success-message">Uploading file... Please wait.</p>}
-                {uploadMessage && <p className="success-message">{uploadMessage}</p>}
+              {isLoading && (
+                <p className="success-message">Uploading file... Please wait.</p>
+              )}
+              {uploadMessage && (
+                <p className="success-message">{uploadMessage}</p>
+              )}
               <button
                 className="submit-button"
-                onClick={handleSelectedFileUpload}
+                onClick={() => console.log("Upload clicked")}
               >
-                
                 Upload to <FontAwesomeIcon icon={faGoogleDrive} />
               </button>
-              <button className="submit-button" onClick={handleSubmit}><FontAwesomeIcon icon={faCheck} /></button>
+              <button className="submit-button" onClick={handleSubmit}>
+                <FontAwesomeIcon icon={faCheck} />
+              </button>
             </>
           ) : (
             <p className="success-message">No video selected</p>
           )}
         </div>
+
         {uploadedFileName && uploadDateTime && (
           <CalendarUpload
             fileName={uploadedFileName}
             uploadDateTime={uploadDateTime}
           />
         )}
-        
+
+        {/* Modal for Google Drive Picker */}
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <iframe
+                title="Google Drive Picker"
+                src="https://drive.google.com/drive/u/0/"
+                frameBorder="0"
+                style={{ width: "100%", height: "100%" }}
+              />
+              <button className="close-button" onClick={() => setShowModal(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
