@@ -3,7 +3,8 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util"; // Importing from the new package
 import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faScissors } from "@fortawesome/free-solid-svg-icons";
 const VideoPreview = ({ videoUrl }) => {
   const [ffmpeg] = useState(() => new FFmpeg());
   const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
@@ -70,7 +71,7 @@ const VideoPreview = ({ videoUrl }) => {
     <div className="video-preview">
       <video src={trimmedVideoUrl || videoUrl} controls className="video-element" />
       <div id="trim-slider"></div>
-      <button onClick={handleTrim}>Trim Video</button>
+      <button onClick={handleTrim}><FontAwesomeIcon icon={faScissors} /></button>
     </div>
   );
 };

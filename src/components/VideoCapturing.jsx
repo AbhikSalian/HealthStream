@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../css/VideoCapturing.css";
 import Webcam from "react-webcam";
 import Header from "./Header";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRecordVinyl } from "@fortawesome/free-solid-svg-icons";
+import { faStop } from "@fortawesome/free-solid-svg-icons";
 const VideoCapturing = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
@@ -83,11 +85,11 @@ const VideoCapturing = () => {
         </p>
         {!isRecording ? (
           <button className="startButton" onClick={handleStartRecording}>
-            Start Capturing
+            Start Recording <FontAwesomeIcon icon={faRecordVinyl} />
           </button>
         ) : (
           <button className="stopButton" onClick={handleStopRecording}>
-            Stop Capturing
+            Stop Recording <FontAwesomeIcon icon={faStop} />
           </button>
         )}
       </div>

@@ -5,6 +5,10 @@ import CalendarUpload from "./CalendarUpload";
 import VideoPreview from "./VideoPreview";
 import "../css/UploadOptions.css";
 import useDrivePicker from "react-google-drive-picker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLaptop } from "@fortawesome/free-solid-svg-icons";
+import { faGoogleDrive } from "@fortawesome/free-brands-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 const UploadOptions = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
@@ -169,12 +173,13 @@ const UploadOptions = () => {
     <>
       <Header />
       <div className="upload-options-container">
+          <h3>Upload</h3>
         <div className="button-container">
           <button
             className="upload-button"
             onClick={() => document.getElementById("fileInput").click()}
           >
-            Upload from Device
+            From <FontAwesomeIcon icon={faLaptop} />
           </button>
           <input
             type="file"
@@ -184,20 +189,23 @@ const UploadOptions = () => {
             onChange={handleDeviceUpload}
           />
           <button className="upload-button" onClick={handleDriveUpload}>
-            Upload from Google Drive
+            From <FontAwesomeIcon icon={faGoogleDrive} />
           </button>
         </div>
         <div className="info-container">
           {videoPreview ? ( // Use VideoPreview component
             <>
               <VideoPreview videoUrl={videoPreview} />
+              {isLoading && <p>Uploading file... Please wait.</p>}
+                {uploadMessage && <p>{uploadMessage}</p>}
               <button
                 className="submit-button"
                 onClick={handleSelectedFileUpload}
               >
-                Upload to Google Drive
+                
+                Upload to <FontAwesomeIcon icon={faGoogleDrive} />
               </button>
-              <button className="submit-button">Submit</button>
+              <button className="submit-button"><FontAwesomeIcon icon={faCheck} /></button>
             </>
           ) : (
             <p>No video selected</p>
@@ -209,8 +217,7 @@ const UploadOptions = () => {
             uploadDateTime={uploadDateTime}
           />
         )}
-        {isLoading && <p>Uploading file... Please wait.</p>}
-        {uploadMessage && <p>{uploadMessage}</p>}
+        
       </div>
     </>
   );
