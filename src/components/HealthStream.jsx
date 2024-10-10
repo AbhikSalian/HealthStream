@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const HealthStream = () => {
   const navigate = useNavigate();
   const handleRecord = () => {
-    navigate("/video-capture");
+    navigate("/video-capturing");
   };
   return (
     <div className="container">
