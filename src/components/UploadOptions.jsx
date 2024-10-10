@@ -123,8 +123,6 @@ const UploadOptions = () => {
   };
 
   const handleDriveUpload = () => {
-    // setShowModal(true); // Show the modal when Drive upload is clicked
-
     openPicker({
       clientId: clientId,
       developerKey: apiKey,
@@ -137,7 +135,6 @@ const UploadOptions = () => {
       callbackFunction: (data) => {
         if (data.action === "cancel") {
           console.log("User clicked cancel/close button");
-          setShowModal(false); // Close modal if canceled
           return;
         }
 
@@ -158,13 +155,13 @@ const UploadOptions = () => {
               const videoUrl = URL.createObjectURL(blob);
               setVideoPreview(videoUrl);
               console.log("File fetched and set:", file);
-              setShowModal(false); // Close the modal after the file is set
             })
             .catch((error) => console.error("Error fetching file from Drive:", error));
         }
       },
     });
   };
+
 
   const handleSubmit = () => {
     navigate("/video-submitted");
@@ -229,23 +226,6 @@ const UploadOptions = () => {
             fileName={uploadedFileName}
             uploadDateTime={uploadDateTime}
           />
-        )}
-
-        {/* Modal for Google Drive Picker */}
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <iframe
-                title="Google Drive Picker"
-                src="https://drive.google.com/drive/u/0/"
-                frameBorder="0"
-                style={{ width: "100%", height: "100%" }}
-              />
-              <button className="close-button" onClick={() => setShowModal(false)}>
-                Close
-              </button>
-            </div>
-          </div>
         )}
       </div>
     </>
