@@ -1,102 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #fff;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.logoutButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
+}
+
+.title-home {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin: 60px 0 20px 0;
+}
+
+.buttonContainer {
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.actionButton {
+  background-color: #82cfff;
+  border: 2px solid #00ffcc;
+  color: black;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+}
+
+.orText {
+  font-size: 18px;
+  margin: 10px 0;
+}
+.title-home {
+  font-size: 3rem; /* Make the font big */
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif; /* Use a stylish font, e.g., Pacifico */
+  color: #000000; /* Customize the color */
+  text-align: left; /* Center the text */
+  margin-top: 50px; /* Add some margin on top */
+}
+
+/* Import the Google font in the CSS file */
+
+@media (max-width: 767px) {
   .logoutButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto; 
+    font-size: 14px;
+    padding: 8px 16px;
   }
-  
-  .title-home {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    margin: 60px 0 20px 0; 
+}
+
+/* Desktop-specific styling */
+@media (min-width: 768px) {
+  .container {
+    padding: 40px;
   }
-  
-  .buttonContainer {
-    margin: 10px 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .actionButton {
-    background-color: #82cfff;
-    border: 2px solid #00ffcc;
-    color: black;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 80%;
-    max-width: 300px;
-    text-align: center;
-  }
-  
-  .orText {
+
+  .logoutButton {
+    padding: 12px 24px;
     font-size: 18px;
-    margin: 10px 0;
   }
-  .title-home {
-    font-size: 3rem;               /* Make the font big */
-    font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;  /* Use a stylish font, e.g., Pacifico */
-    color: #000000;                /* Customize the color */
-    text-align: left;            /* Center the text */
-    margin-top: 50px;              /* Add some margin on top */
+
+  .title {
+    font-size: 48px;
   }
-  
-  /* Import the Google font in the CSS file */
-  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-  @media (max-width: 767px) {
-    .logoutButton {
-      font-size: 14px;
-      padding: 8px 16px;
-    }
+
+  .actionButton {
+    padding: 20px;
+    font-size: 18px;
+    max-width: 400px;
   }
-  
-  /* Desktop-specific styling */
-  @media (min-width: 768px) {
-    .container {
-      padding: 40px;
-    }
-  
-    .logoutButton {
-      padding: 12px 24px;
-      font-size: 18px;
-    }
-  
-    .title {
-      font-size: 48px;
-    }
-  
-    .actionButton {
-      padding: 20px;
-      font-size: 18px;
-      max-width: 400px;
-    }
-  
-    .orText {
-      font-size: 20px;
-    }
+
+  .orText {
+    font-size: 20px;
   }
-  
+}

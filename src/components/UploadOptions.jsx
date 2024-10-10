@@ -132,34 +132,38 @@ const UploadOptions = () => {
           console.log("User clicked cancel/close button");
           return;
         }
-        
+
         if (data.docs && data.docs.length > 0) {
-          const fileId = data.docs[0].id;  // Get the selected file ID
-          const fileName = data.docs[0].name;  // Get the selected file name
+          const fileId = data.docs[0].id; // Get the selected file ID
+          const fileName = data.docs[0].name; // Get the selected file name
           console.log(`File selected: ${fileName} (ID: ${fileId})`);
-  
+
           // Now fetch the file from Google Drive using the file ID
-          fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-            method: "GET",
-            headers: new Headers({
-              Authorization: "Bearer " + token,
-            }),
-          })
+          fetch(
+            `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+            {
+              method: "GET",
+              headers: new Headers({
+                Authorization: "Bearer " + token,
+              }),
+            }
+          )
             .then((response) => response.blob())
             .then((blob) => {
               // Create a File object from the Blob
               const file = new File([blob], fileName, { type: blob.type });
-              setVideoFile(file);  // Set the selected file
+              setVideoFile(file); // Set the selected file
               const videoUrl = URL.createObjectURL(blob);
-            setVideoPreview(videoUrl);
+              setVideoPreview(videoUrl);
               console.log("File fetched and set:", file);
             })
-            .catch((error) => console.error("Error fetching file from Drive:", error));
+            .catch((error) =>
+              console.error("Error fetching file from Drive:", error)
+            );
         }
       },
     });
   };
-  
 
   return (
     <>
@@ -185,14 +189,19 @@ const UploadOptions = () => {
         </div>
         <div className="info-container">
           {videoPreview ? ( // Use VideoPreview component
-            <VideoPreview videoUrl={videoPreview} />
+            <>
+              <VideoPreview videoUrl={videoPreview} />
+              <button
+                className="submit-button"
+                onClick={handleSelectedFileUpload}
+              >
+                Upload to Google Drive
+              </button>
+              <button className="submit-button">Submit</button>
+            </>
           ) : (
             <p>No video selected</p>
           )}
-          <button className="submit-button" onClick={handleSelectedFileUpload}>
-            Upload to Google Drive
-          </button>
-          <button className="submit-button">Submit</button>
         </div>
         {uploadedFileName && uploadDateTime && (
           <CalendarUpload
