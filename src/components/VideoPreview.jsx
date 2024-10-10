@@ -71,7 +71,7 @@ const VideoPreview = ({ videoUrl }) => {
     <div className="video-preview">
       <video src={trimmedVideoUrl || videoUrl} controls className="video-element" />
       <div id="trim-slider"></div>
-      <button onClick={handleTrim}><FontAwesomeIcon icon={faScissors} /></button>
+      <button className="trim-btn" onClick={handleTrim}><FontAwesomeIcon icon={faScissors} /></button>
     </div>
   );
 };

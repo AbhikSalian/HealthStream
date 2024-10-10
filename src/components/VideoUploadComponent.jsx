@@ -7,7 +7,8 @@ import CalendarUpload from "./CalendarUpload";
 import Header from "./Header";
 import Trimmer from "./Trimmer";
 import "../css/VideoUploadComponent.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 const VideoUploadComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,9 +106,7 @@ const VideoUploadComponent = () => {
               Trim Video
             </button> */}
             {/* <Trimmer/> */}
-            <button className="button submit-button" onClick={handleSubmit}>
-              Submit Video
-            </button>
+            <button className="button submit-button" onClick={handleSubmit}><FontAwesomeIcon icon={faCheck}/></button>
           </div>
           {/* <TrimModal 
             show={showTrimModal} 

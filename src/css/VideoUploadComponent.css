@@ -40,7 +40,10 @@
     cursor: pointer;
     font-size: 16px;
   }
-  
+  .trim-btn{
+    background-color: black;
+    color: white;
+  }
   .retake-button {
     background-color: #28a745; 
     color: white;
@@ -209,9 +212,26 @@
     }
   
     .top-buttons, .submit-buttons {
-      flex-direction: column;
+      display: flex;
       gap: 5px;
     }
+    .top-buttons{
+      margin-top: 30px;
+    }
+    .submit-buttons {
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center;     /* Center vertically */
+      gap: 5px;
+      margin-top: 20px;
+    }
+    
+    .submit-button {
+      width: auto; /* Adjust width for flexibility */
+      padding: 10px 20px; /* Adjust padding as per requirement */
+      text-align: center; /* Center text inside button */
+    }
+    
   }
   
   /* Adjust styles for tablets and larger devices */

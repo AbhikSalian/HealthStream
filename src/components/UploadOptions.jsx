@@ -196,8 +196,8 @@ const UploadOptions = () => {
           {videoPreview ? ( // Use VideoPreview component
             <>
               <VideoPreview videoUrl={videoPreview} />
-              {isLoading && <p>Uploading file... Please wait.</p>}
-                {uploadMessage && <p>{uploadMessage}</p>}
+              {isLoading && <p className="success-message">Uploading file... Please wait.</p>}
+                {uploadMessage && <p className="success-message">{uploadMessage}</p>}
               <button
                 className="submit-button"
                 onClick={handleSelectedFileUpload}
@@ -208,7 +208,7 @@ const UploadOptions = () => {
               <button className="submit-button"><FontAwesomeIcon icon={faCheck} /></button>
             </>
           ) : (
-            <p>No video selected</p>
+            <p className="success-message">No video selected</p>
           )}
         </div>
         {uploadedFileName && uploadDateTime && (
