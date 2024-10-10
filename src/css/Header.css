@@ -27,7 +27,10 @@ button.logout-btn {
   margin-top: 10px;
 
 }
-
+button.back-btn{
+  background-color: white;
+  border: 0px;
+}
 @media (max-width: 600px) {
   .header {
     flex-direction: row; /* Keeps them in one line */
@@ -36,12 +39,18 @@ button.logout-btn {
   }
   button.logout-btn {
     padding: 0.5rem 1rem;
-    font-size: 16px;
+    font-size: 24px;
     border-top: 10px;
     background-color: white;
     color: red;
     border: none;
     cursor: pointer;
     margin-top: 10px;
+    padding-right: 10px;
+    justify-content: right;
+  }
+  button.back-btn{
+    background-color: white;
+    border: 0px;
   }
 }

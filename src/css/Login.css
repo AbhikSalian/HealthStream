@@ -1,0 +1,43 @@
+#signInButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
+  button.signInButton {
+    padding: 1px 5px;
+    font-size: 10px;
+    border: none;
+    background-color: #4285f4; /* Google blue color */
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between text and icon */
+    width: 100px; /* Set specific width */
+    height: 40px;
+  }
+  
+  button.signInButton:hover {
+    background-color: #357ae8; /* Darker blue on hover */
+  }
+  @media (min-width: 768px){
+      button.signInButton {
+          padding: 5px 10px;
+          font-size: 16px;
+          border: none;
+          background-color: #4285f4; /* Google blue color */
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px; /* Space between text and icon */
+          width: 150px; /* Set specific width */
+          height: 60px;
+        }
+  }

@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
 import { useEffect } from "react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons/faGoogle";
+import '../css/Login.css';
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +43,7 @@ function Login() {
 
   return (
     <div id="signInButton">
-      <button onClick={() => login()}>Sign in with Google</button>
+      <button className="signInButton" onClick={() => login()}>Sign in with <FontAwesomeIcon icon={faGoogle} /></button>
     </div>
   );
 }
