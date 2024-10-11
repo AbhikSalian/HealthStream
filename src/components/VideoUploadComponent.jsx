@@ -9,10 +9,10 @@ import Trimmer from "./Trimmer";
 import "../css/VideoUploadComponent.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 const VideoUploadComponent = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { videoUrl } = location.state || {};
+  const { videoUrl } = useSelector((state) => state.video);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [mediaStream, setMediaStream] = useState(null);
@@ -68,30 +68,9 @@ const VideoUploadComponent = () => {
 
   const handleSubmit = () => navigate('/video-submitted');
 
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        setMediaStream(stream);
-      } catch (error) {
-        console.error("Error accessing camera:", error);
-      }
-    };
+  
 
-    startCamera();
-
-    return () => {
-      stopCamera();
-    };
-  }, []);
-
-  const stopCamera = () => {
-    if (mediaStream) {
-      mediaStream.getTracks().forEach(track => track.stop());
-      setMediaStream(null);
-      console.log("Camera stopped");
-    }
-  };
+  
 
   return (
     <div className="video-upload-container">

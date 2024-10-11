@@ -37,11 +37,15 @@ const VideoRecorder = () => {
           audio: true,
         });
         streamRef.current = userStream;
-
-        if (liveVideoRef.current) {
+        try{if (liveVideoRef.current) {
           liveVideoRef.current.srcObject = userStream;
           liveVideoRef.current.play();
+        }}
+        catch(ee){
+          console.log(ee);
         }
+
+        
 
         const mediaRecorder = new MediaRecorder(userStream);
         mediaRecorderRef.current = mediaRecorder;
