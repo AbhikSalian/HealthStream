@@ -20,11 +20,19 @@
 .videoPreview {
   width: 100%;
   height: auto;
-  background-color: #000; /* Black background for video */
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.videoPreview.black {
+  background-color: #000; /* Black background when not recording */
+}
+
+.videoPreview.white {
+  background-color: #fff; /* White background when recording */
+}
+
 
 /* Landscape mode for desktop */
 @media (min-width: 768px) {

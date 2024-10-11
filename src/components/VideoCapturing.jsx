@@ -60,7 +60,7 @@ const VideoCapturing = () => {
     return () => {
       const stream = webcamRef.current?.video.srcObject;
       if (stream) {
-        stream.getTracks().forEach(track => track.stop()); // Stop each track
+        stream.getTracks().forEach((track) => track.stop()); // Stop each track
         webcamRef.current.video.srcObject = null; // Clear the source object
         console.log("Webcam stopped");
       }
@@ -71,7 +71,7 @@ const VideoCapturing = () => {
     <div className="container">
       <Header />
       <div className="videoWrapper">
-        <div className="videoPreview">
+        <div className={`videoPreview ${isRecording ? "white" : "black"}`}>
           {isRecording ? (
             <Webcam className="videoPreview" ref={webcamRef} />
           ) : videoUrl ? (
