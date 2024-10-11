@@ -59,15 +59,15 @@ function AppRoutes() {
   return useRoutes(routesArray);
 }
 const App = () => {
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "https://www.googleapis.com/auth/drive.file",
-      });
-    }
-    gapi.load("client:auth2", start);
-  }, []);
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: clientId,
+  //       scope: "https://www.googleapis.com/auth/drive.file",
+  //     });
+  //   }
+  //   gapi.load("client:auth2", start);
+  // }, []);
   // useEffect(() => {
   //   if (import.meta.env.VITE_NODE_ENV === "development") {
   //     const originalConsoleError = console.error;

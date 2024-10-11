@@ -12,15 +12,15 @@ function Login() {
   const dispatch = useDispatch();
 
   // Suppress specific console errors in development
-  useEffect(() => {
-    if (import.meta.env.VITE_NODE_ENV === "development") {
-      const originalConsoleError = console.error;
-      console.error = (...args) => {
-        if (args[0].includes("Cross-Origin-Opener-Policy")) return;
-        originalConsoleError(...args);
-      };
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (import.meta.env.VITE_NODE_ENV === "development") {
+  //     const originalConsoleError = console.error;
+  //     console.error = (...args) => {
+  //       if (args[0].includes("Cross-Origin-Opener-Policy")) return;
+  //       originalConsoleError(...args);
+  //     };
+  //   }
+  // }, []);
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
