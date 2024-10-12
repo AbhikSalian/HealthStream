@@ -2,16 +2,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100vh;
   padding: 20px;
+  margin-top: 30px;
 }
 
 .videoWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   max-width: 1000px;
   margin-top: 60px;
@@ -19,7 +20,7 @@
 
 .videoPreview {
   width: 100%;
-  height: auto;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,10 +28,13 @@
 
 .videoPreview.black {
   background-color: #000; /* Black background when not recording */
+  height: 500px;
+
 }
 
 .videoPreview.white {
   background-color: #fff; /* White background when recording */
+  height: 500px;
 }
 
 
@@ -45,9 +49,9 @@
 /* Portrait mode for mobile */
 @media (max-width: 767px) {
   .videoPreview {
-    width: 100%;
-    height: 100vh; /* Portrait aspect ratio */
-    max-height: 70vh; /* Limit height to prevent overflow */
+    width: 80%;
+    height: 50vh; /* Portrait aspect ratio */
+    max-height: 50vh; /* Limit height to prevent overflow */
   }
 }
 

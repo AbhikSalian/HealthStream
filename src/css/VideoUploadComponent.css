@@ -153,7 +153,9 @@
   .success-message {
     color: green;
     font-weight: bold;
-    margin-top: 20px;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
   }
   
   
@@ -193,6 +195,7 @@
     width: 100%;
     max-width: 100%;
     height: auto; /* Maintains aspect ratio */
+    max-height: 60vh;
     border-radius: 10px;
   }
   

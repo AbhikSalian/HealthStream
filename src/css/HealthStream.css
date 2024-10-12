@@ -1,16 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-.container {
+.container-home {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Adjusted to align content at the top */
   align-items: center;
-  min-height: 100vh;
   background-color: #fff;
   padding: 20px;
   box-sizing: border-box;
   position: relative;
+  margin-top: 40px; /* Added margin at the top */
 }
+
 
 .logoutButton {
   position: absolute;
@@ -56,14 +57,15 @@
 
 .orText {
   font-size: 18px;
-  margin: 10px 0;
+  margin: auto;
 }
 .title-home {
   font-size: 3rem; /* Make the font big */
   font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif; /* Use a stylish font, e.g., Pacifico */
   color: #000000; /* Customize the color */
   text-align: left; /* Center the text */
-  margin-top: 50px; /* Add some margin on top */
+  margin-top: 120px; /* Add some margin on top */
+  margin-left: 30px;
 }
 
 /* Import the Google font in the CSS file */
@@ -98,5 +100,6 @@
 
   .orText {
     font-size: 20px;
+    margin: auto;
   }
 }

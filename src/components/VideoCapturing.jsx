@@ -84,39 +84,47 @@ const VideoCapturing = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <>
       <Header />
-      <div className="videoWrapper">
-        <div className={`videoPreview ${isRecording ? "white" : "black"}`}>
-          {isRecording ? (
-            // <Webcam className="videoPreview" ref={webcamRef} />
-            <Webcam
-              ref={liveVideoRef}
-              className="videoPreview"
-              autoPlay
-              muted
-              playsInline
-            />
-          ) : videoUrl ? (
-            <video src={videoUrl} controls className="videoPreview" />
+      <div className="container">
+        <div className="videoWrapper">
+          <div className={`videoPreview ${isRecording ? "white" : "black"}`}>
+            {isRecording ? (
+              // <Webcam className="videoPreview" ref={webcamRef} />
+              <Webcam
+                ref={liveVideoRef}
+                className="videoPreview"
+                autoPlay
+                muted
+                playsInline
+              />
+            ) : videoUrl ? (
+              <video src={videoUrl} controls className="videoPreview" />
+            ) : (
+              <p>No video recorded</p>
+            )}
+          </div>
+          <p className="statusText">
+            {isRecording ? "Recording in progress..." : feedbackMessage}
+          </p>
+          {!isRecording ? (
+            <button
+              className="startButton"
+              onClick={() => handleStartRecording()}
+            >
+              Start Recording <FontAwesomeIcon icon={faRecordVinyl} />
+            </button>
           ) : (
-            <p>No video recorded</p>
+            <button
+              className="stopButton"
+              onClick={() => handleStopRecording()}
+            >
+              Stop Recording <FontAwesomeIcon icon={faStop} />
+            </button>
           )}
         </div>
-        <p className="statusText">
-          {isRecording ? "Recording in progress..." : feedbackMessage}
-        </p>
-        {!isRecording ? (
-          <button className="startButton" onClick={()=>handleStartRecording()}>
-            Start Recording <FontAwesomeIcon icon={faRecordVinyl} />
-          </button>
-        ) : (
-          <button className="stopButton" onClick={()=>handleStopRecording()}>
-            Stop Recording <FontAwesomeIcon icon={faStop} />
-          </button>
-        )}
       </div>
-    </div>
+    </>
   );
 };
 
