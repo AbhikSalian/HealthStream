@@ -11,8 +11,8 @@ import "../css/VideoCapturing.css";
 import Webcam from "react-webcam";
 import Header from "./Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRecordVinyl } from "@fortawesome/free-solid-svg-icons";
-import { faStop } from "@fortawesome/free-solid-svg-icons";
+import { faRecordVinyl, faStop } from "@fortawesome/free-solid-svg-icons";
+
 const VideoCapturing = () => {
   const dispatch = useDispatch();
   const { isRecording, videoUrl } = useSelector((state) => state.video);
@@ -23,6 +23,10 @@ const VideoCapturing = () => {
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const streamRef = useRef(null);
   const liveVideoRef = useRef(null);
+
+  // New state to track recording time
+  const [recordingTime, setRecordingTime] = useState(0);
+  const timerRef = useRef(null);
 
   const handleStartRecording = async () => {
     if (!isRecording) {
@@ -37,8 +41,8 @@ const VideoCapturing = () => {
         streamRef.current = userStream;
         if (liveVideoRef.current) {
           liveVideoRef.current.srcObject = userStream;
-          // liveVideoRef.current.play();
         }
+
         mediaRecorderRef.current = new MediaRecorder(userStream);
 
         mediaRecorderRef.current.ondataavailable = (event) => {
@@ -58,6 +62,11 @@ const VideoCapturing = () => {
         dispatch(startRecording());
 
         setFeedbackMessage("Recording started...");
+
+        // Start the timer for recording time
+        timerRef.current = setInterval(() => {
+          setRecordingTime((prevTime) => prevTime + 1);
+        }, 1000);
       } catch (err) {
         console.error("Error accessing media devices:", err);
         setFeedbackMessage("Error accessing media devices.");
@@ -70,6 +79,10 @@ const VideoCapturing = () => {
       mediaRecorderRef.current.stop();
       streamRef.current.getTracks().forEach((track) => track.stop());
       dispatch(stopRecording());
+
+      // Stop and reset the timer
+      clearInterval(timerRef.current);
+      setRecordingTime(0);
     }
   };
 
@@ -80,8 +93,16 @@ const VideoCapturing = () => {
         streamRef.current.getTracks().forEach((track) => track.stop());
         dispatch(resetStream());
       }
+      clearInterval(timerRef.current);
     };
   }, [dispatch]);
+
+  // Convert recording time to minutes and seconds
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  };
 
   return (
     <>
@@ -90,7 +111,6 @@ const VideoCapturing = () => {
         <div className="videoWrapper">
           <div className={`videoPreview ${isRecording ? "white" : "black"}`}>
             {isRecording ? (
-              // <Webcam className="videoPreview" ref={webcamRef} />
               <Webcam
                 ref={liveVideoRef}
                 className="videoPreview"
@@ -105,7 +125,9 @@ const VideoCapturing = () => {
             )}
           </div>
           <p className="statusText">
-            {isRecording ? "Recording in progress..." : feedbackMessage}
+            {isRecording
+              ? `Recording in progress... ${formatTime(recordingTime)}`
+              : feedbackMessage}
           </p>
           {!isRecording ? (
             <button
@@ -115,10 +137,7 @@ const VideoCapturing = () => {
               Start Recording <FontAwesomeIcon icon={faRecordVinyl} />
             </button>
           ) : (
-            <button
-              className="stopButton"
-              onClick={() => handleStopRecording()}
-            >
+            <button className="stopButton" onClick={() => handleStopRecording()}>
               Stop Recording <FontAwesomeIcon icon={faStop} />
             </button>
           )}

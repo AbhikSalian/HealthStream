@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-import noUiSlider from "nouislider";
 import Slider from "react-range-slider-input";
-import "nouislider/dist/nouislider.css";
 import "react-range-slider-input/dist/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
-const ffmpeg = createFFmpeg({ corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+const ffmpeg = createFFmpeg({
+  corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
   log: true,
   wasmOptions: {
     // Disable shared memory (no use of SharedArrayBuffer)
     useWasmThreads: false,
-  },});
+  },
+});
 const VideoPreview = ({ videoUrl }) => {
   const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
   const [start, setStart] = useState(0);
@@ -21,22 +21,40 @@ const VideoPreview = ({ videoUrl }) => {
   const [isTrimming, setIsTrimming] = useState(false);
   const videoRef = useRef(null);
   const maxTrimDuration = 10;
+  useEffect(() => {
+    // Reset trimmed video URL and duration when a new video is selected
+    setTrimmedUrl("");
+    setDuration(0);
+    setStart(0);
+    setEnd(10); // Set to a default or reset value
+    console.log("VideoUrl: ",videoUrl);
+  }, [videoUrl]); // This runs whenever the videoUrl changes
 
   const loadVideoMetadata = () => {
     const video = videoRef.current;
-    const videoDuration = video.duration;
+    console.log("VideoRef: ", videoRef);
+    if (video) {
+      video.onloadedmetadata = () => {
+        const videoDuration = video.duration;
+        console.log("Duration:", videoDuration);
 
-    setDuration(videoDuration);
+        if (videoDuration && !isNaN(videoDuration)) {
+          setDuration(videoDuration);
 
-    // Adjust the end point if the video is shorter than 10 seconds
-    const endValue = videoDuration > maxTrimDuration ? maxTrimDuration : videoDuration;
-    setEnd(endValue);
+          // Adjust the end point if the video is shorter than 10 seconds
+          const endValue =
+            videoDuration > maxTrimDuration ? maxTrimDuration : videoDuration;
+          setEnd(endValue);
+        } else {
+          console.log("Unable to fetch video duration.");
+        }
+      };
+    }
   };
-
 
   const handleTrim = async () => {
     if (!ffmpeg.isLoaded()) await ffmpeg.load();
-    
+
     setIsTrimming(true);
 
     // Load the video into FFmpeg
@@ -63,50 +81,35 @@ const VideoPreview = ({ videoUrl }) => {
     setTrimmedUrl(trimmedUrl);
     setIsTrimming(false);
   };
-  // Set up the slider for trimming
-  // useEffect(() => {
-  //   const slider = document.getElementById("trim-slider");
-  //   noUiSlider.create(slider, {
-  //     start: [start, end],
-  //     range: {
-  //       min: 0,
-  //       max: 60, // Adjust this based on the actual length of the video
-  //     },
-  //     step: 1,
-  //     connect: true,
-  //   });
-
-  //   slider.noUiSlider.on("update", (values) => {
-  //     setStart(parseFloat(values[0]));
-  //     setEnd(parseFloat(values[1]));
-  //   });
-
-  //   return () => {
-  //     slider.noUiSlider.destroy();
-  //   };
-  // }, []);
 
   return (
     <div className="video-preview">
-      <video src={trimmedUrl || videoUrl} ref={videoRef} onLoadedMetadata={loadVideoMetadata} controls className="video-element" />
-      {/* <div id="trim-slider"></div> */}
+      <video
+        src={trimmedUrl || videoUrl}
+        ref={videoRef}
+        onLoadedMetadata={loadVideoMetadata}
+        controls
+        className="video-element"
+      />
       <div style={{ marginTop: "20px" }}>
-            <Slider
-              min={0}
-              max={duration}
-              value={[start, end]}
-              step={0.1}
-              onInput={(value) => {
-                setStart(value[0]);
-                setEnd(value[1]);
-              }}
-            />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>Start: {start.toFixed(2)}s</span>
-              <span>End: {end.toFixed(2)}s</span>
-            </div>
-          </div>
-      <button className="trim-btn" onClick={handleTrim}><FontAwesomeIcon icon={faScissors} /></button>
+        <Slider
+          min={0}
+          max={duration}
+          value={[start, end]}
+          step={0.1}
+          onInput={(value) => {
+            setStart(value[0]);
+            setEnd(value[1]);
+          }}
+        />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>Start: {start.toFixed(2)}s</span>
+          <span>End: {end.toFixed(2)}s</span>
+        </div>
+      </div>
+      <button className="trim-btn" onClick={handleTrim}>
+        <FontAwesomeIcon icon={faScissors} />
+      </button>
     </div>
   );
 };
