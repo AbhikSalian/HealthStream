@@ -2,7 +2,6 @@ import VideoRecorder from "./components/VideoRecorder";
 import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Login from "./components/Login";
-import { gapi } from "gapi-script";
 import { useEffect } from "react";
 import { BrowserRouter, Route, useRoutes, Router } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";

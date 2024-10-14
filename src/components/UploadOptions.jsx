@@ -208,7 +208,7 @@ const UploadOptions = () => {
               )}
               <button
                 className="submit-button"
-                onClick={() => console.log("Upload clicked")}
+                onClick={handleSelectedFileUpload}
               >
                 Upload to <FontAwesomeIcon icon={faGoogleDrive} />
               </button>
