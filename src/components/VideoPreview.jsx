@@ -21,15 +21,7 @@ const VideoPreview = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const maxTrimDuration = 10;
   const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
-  // useEffect(() => {
-  //   // Reset trimmed video URL and duration when a new video is selected
-  //   setTrimmedUrl("");
-  //   setDuration(0);
-  //   setStart(0);
-  //   setEnd(10); // Set to a default or reset value
-  //   console.log("VideoUrl: ",videoUrl);
-  // }, [videoUrl]); // This runs whenever the videoUrl changes
-
+  
   useEffect(() => {
     const loadFFmpeg = async () => {
       try {
@@ -189,15 +181,16 @@ const VideoPreview = () => {
         className="video-element"
       />
       {duration > 0 && (
-        <div style={{ marginTop: "20px" }}>
+        <div className="slider-container">
           <Slider
             min={0}
             max={duration}
             value={[start, end]}
             step={0.1}
             onInput={handleSliderInput}
+            className="slider"
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="time-labels"> {/* Added wrapper for labels */}
             <span>Start: {start.toFixed(2)}s</span>
             <span>End: {end.toFixed(2)}s</span>
           </div>
@@ -208,6 +201,7 @@ const VideoPreview = () => {
       </button>
     </div>
   );
+  
 };
 
 export default VideoPreview;

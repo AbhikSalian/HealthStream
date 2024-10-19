@@ -5,6 +5,34 @@
     margin: auto;
     text-align: center;
   }
+  .video-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    margin: 20px; /* Add some margin for spacing */
+  }
+  
+  .video-element {
+    width: 100%; /* Make the video take full width of its container */
+    max-width: 800px; /* Set a max-width for larger screens */
+  }
+  
+  .slider-container {
+    width: 100%; /* Make the slider container take full width */
+    max-width: 800px; /* Set a max-width to match the video */
+    margin-top: 20px; /* Add some margin on top */
+  }
+  
+  .slider {
+    width: 100%; /* Full width for the slider */
+  }
+  
+  .trim-btn {
+    margin-top: 20px; /* Space above the trim button */
+    padding: 10px 20px; /* Add some padding */
+    font-size: 16px; /* Font size for better readability */
+    cursor: pointer; /* Change cursor to pointer */
+  }
   
   .header {
     display: flex;
@@ -24,6 +52,17 @@
     color: red;
     cursor: pointer;
     font-size: 16px;
+  }
+  .time-labels {
+    display: flex;
+    justify-content: space-between; /* Space between the labels */
+    margin-top: 10px; /* Space above the labels */
+    font-size: 14px; /* Font size for the labels */
+    color: #333; /* Text color */
+  }
+  
+  .time-labels span {
+    font-weight: bold; /* Make the text bold */
   }
   
   .top-buttons {
