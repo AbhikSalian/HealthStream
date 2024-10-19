@@ -20,7 +20,7 @@ const VideoPreview = () => {
   const messageRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const maxTrimDuration = 10;
-
+  const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
   // useEffect(() => {
   //   // Reset trimmed video URL and duration when a new video is selected
   //   setTrimmedUrl("");
@@ -66,7 +66,13 @@ const VideoPreview = () => {
       try {
         const response = await fetch(videoUrl);
         const blob = await response.blob();
-        const file = new File([blob], "video.mp4", { type: blob.type });
+
+        // Get the current timestamp and format it as a filename
+        const timestamp = Date.now(); // Get current timestamp in milliseconds
+        const fileName = `abc.mp4`; // Generate dynamic filename
+
+        // Create a new File object with the dynamic filename
+        const file = new File([blob], fileName, { type: blob.type });
         setSelectedFile(file);
       } catch (error) {
         console.error("Error fetching video file from URL:", error);
@@ -113,17 +119,32 @@ const VideoPreview = () => {
           "copy",
           "output.mp4",
         ]);
+
         const data = await ffmpeg.readFile("output.mp4");
         if (data.length > 0) {
           console.log("Output video segment successfully read!");
-          videoRef.current.src = URL.createObjectURL(
+
+          const trimmedUrl = URL.createObjectURL(
             new Blob([data.buffer], { type: "video/mp4" })
           );
-          console.log("Video source updated successfully!");
+          console.log("trimmedUrl: ", trimmedUrl);
+          setTrimmedVideoUrl(trimmedUrl);
+
+          // Only update the video source if videoRef.current exists
+          if (videoRef.current) {
+            videoRef.current.src = trimmedUrl;
+            console.log("Video source updated successfully!");
+          } else {
+            console.error("videoRef is null, unable to set video source.");
+          }
+
+          // Dispatch the trimmed video URL to Redux after it's successfully created
+          dispatch(setVideoUrl(trimmedUrl));
         } else {
           console.error("Failed to read output data from FFmpeg!");
         }
       };
+
       reader.readAsArrayBuffer(selectedFile);
       setIsTrimming(true);
       setStart(0);
@@ -131,6 +152,7 @@ const VideoPreview = () => {
       console.error("Error during transcoding:", error);
     }
   };
+
   const handleDurationChange = (event) => {
     const video = videoRef.current;
     if (video) {
