@@ -26,6 +26,24 @@ const UploadOptions = () => {
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const apiKey = import.meta.env.VITE_DEVELOPER_KEY;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // When videoUrl is provided, convert it into a file-like Blob and set it as selectedFile
+    const fetchVideoFileFromUrl = async () => {
+      try {
+        const response = await fetch(videoUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "video.mp4", { type: blob.type });
+        setVideoFile(file);
+      } catch (error) {
+        console.error("Error fetching video file from URL:", error);
+      }
+    };
+
+    if (videoUrl) {
+      fetchVideoFileFromUrl();
+    }
+  }, [videoUrl]);
   const getOrCreateFolder = async () => {
     try {
       const searchResponse = await fetch(

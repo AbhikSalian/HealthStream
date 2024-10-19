@@ -4,105 +4,183 @@ import Slider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setVideoUrl } from "../redux/videoSlice";
 const VideoPreview = () => {
-
+  const ffmpegRef = useRef(new FFmpeg());
+  const dispatch = useDispatch();
+  const [loaded, setLoaded] = useState(false);
   const { videoUrl } = useSelector((state) => state.video);
-  const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(10); // Default to 10 seconds for trim length
   const [trimmedUrl, setTrimmedUrl] = useState("");
   const [duration, setDuration] = useState(0);
   const [isTrimming, setIsTrimming] = useState(false);
   const videoRef = useRef(null);
+  const messageRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const maxTrimDuration = 10;
+
+  // useEffect(() => {
+  //   // Reset trimmed video URL and duration when a new video is selected
+  //   setTrimmedUrl("");
+  //   setDuration(0);
+  //   setStart(0);
+  //   setEnd(10); // Set to a default or reset value
+  //   console.log("VideoUrl: ",videoUrl);
+  // }, [videoUrl]); // This runs whenever the videoUrl changes
+
   useEffect(() => {
-    // Reset trimmed video URL and duration when a new video is selected
-    setTrimmedUrl("");
-    setDuration(0);
-    setStart(0);
-    setEnd(10); // Set to a default or reset value
-    console.log("VideoUrl: ",videoUrl);
-  }, [videoUrl]); // This runs whenever the videoUrl changes
+    const loadFFmpeg = async () => {
+      try {
+        const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+        const ffmpeg = ffmpegRef.current;
+        ffmpeg.on("log", ({ message }) => {
+          // messageRef.current.innerHTML = message;
+          console.log(message);
+        });
 
-  const loadVideoMetadata = () => {
-    const video = videoRef.current;
-    console.log("VideoRef: ", videoRef);
-    if (video) {
-      video.onloadedmetadata = () => {
-        const videoDuration = video.duration;
-        console.log("Duration:", videoDuration);
+        await ffmpeg.load({
+          coreURL: await toBlobURL(
+            `${baseURL}/ffmpeg-core.js`,
+            "text/javascript"
+          ),
+          wasmURL: await toBlobURL(
+            `${baseURL}/ffmpeg-core.wasm`,
+            "application/wasm"
+          ),
+        });
 
-        if (videoDuration && !isNaN(videoDuration)) {
-          setDuration(videoDuration);
+        setLoaded(true);
+      } catch (error) {
+        console.error("Error loading FFmpeg:", error);
+      }
+    };
 
-          // Adjust the end point if the video is shorter than 10 seconds
-          const endValue =
-            videoDuration > maxTrimDuration ? maxTrimDuration : videoDuration;
-          setEnd(endValue);
-        } else {
-          console.log("Unable to fetch video duration.");
-        }
-      };
+    loadFFmpeg();
+  }, []);
+
+  useEffect(() => {
+    // When videoUrl is provided, convert it into a file-like Blob and set it as selectedFile
+    const fetchVideoFileFromUrl = async () => {
+      try {
+        const response = await fetch(videoUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "video.mp4", { type: blob.type });
+        setSelectedFile(file);
+      } catch (error) {
+        console.error("Error fetching video file from URL:", error);
+      }
+    };
+
+    if (videoUrl) {
+      fetchVideoFileFromUrl();
+    }
+  }, [videoUrl]);
+
+  const toBlobURL = async (url, type) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return URL.createObjectURL(new Blob([blob], { type }));
+    } catch (error) {
+      console.error("Error in toBlobURL while fetching:", url, error);
     }
   };
 
   const handleTrim = async () => {
-    if (!ffmpeg.isLoaded()) await ffmpeg.load();
+    try {
+      const ffmpeg = ffmpegRef.current;
 
-    setIsTrimming(true);
+      if (!selectedFile) {
+        console.error("No file selected!");
+        return;
+      }
 
-    // Load the video into FFmpeg
-    ffmpeg.FS("writeFile", "input.mp4", await fetchFile(videoFile));
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const inputVideo = new Uint8Array(event.target.result);
+        await ffmpeg.writeFile("input.webm", inputVideo);
 
-    // Run the FFmpeg command to trim the video
-    await ffmpeg.run(
-      "-i",
-      "input.mp4",
-      "-ss",
-      String(start),
-      "-to",
-      String(end),
-      "-c",
-      "copy",
-      "output.mp4"
-    );
+        await ffmpeg.exec([
+          "-i",
+          "input.webm",
+          "-ss",
+          start.toFixed(2),
+          "-to",
+          end.toFixed(2),
+          "-c",
+          "copy",
+          "output.mp4",
+        ]);
+        const data = await ffmpeg.readFile("output.mp4");
+        if (data.length > 0) {
+          console.log("Output video segment successfully read!");
+          videoRef.current.src = URL.createObjectURL(
+            new Blob([data.buffer], { type: "video/mp4" })
+          );
+          console.log("Video source updated successfully!");
+        } else {
+          console.error("Failed to read output data from FFmpeg!");
+        }
+      };
+      reader.readAsArrayBuffer(selectedFile);
+      setIsTrimming(true);
+      setStart(0);
+    } catch (error) {
+      console.error("Error during transcoding:", error);
+    }
+  };
+  const handleDurationChange = (event) => {
+    const video = videoRef.current;
+    if (video) {
+      setDuration(video.duration);
+      setEnd(Math.min(10, video.duration));
+    }
+  };
 
-    // Read the output video and create a URL
-    const data = ffmpeg.FS("readFile", "output.mp4");
-    const trimmedBlob = new Blob([data.buffer], { type: "video/mp4" });
-    const trimmedUrl = URL.createObjectURL(trimmedBlob);
+  const handleSliderInput = (values) => {
+    const [newStart, newEnd] = values;
+    const maxDifference = 10;
 
-    setTrimmedUrl(trimmedUrl);
-    setIsTrimming(false);
+    if (newEnd - newStart >= maxDifference) {
+      setStart(newEnd - maxDifference);
+      setEnd(newEnd);
+    } else {
+      if (newEnd - newStart > maxDifference) {
+        setEnd(newStart + maxDifference);
+      } else if (newStart < start) {
+        setEnd(newStart + maxDifference);
+      }
+      setStart(newStart);
+      setEnd(newEnd);
+    }
   };
 
   return (
     <div className="video-preview">
       <video
-        src={trimmedUrl || videoUrl}
+        src={videoUrl}
         ref={videoRef}
-        onLoadedMetadata={loadVideoMetadata}
+        onLoadedMetadata={handleDurationChange}
         controls
         className="video-element"
       />
-      <div style={{ marginTop: "20px" }}>
-        <Slider
-          min={0}
-          max={duration}
-          value={[start, end]}
-          step={0.1}
-          onInput={(value) => {
-            setStart(value[0]);
-            setEnd(value[1]);
-          }}
-        />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>Start: {start.toFixed(2)}s</span>
-          <span>End: {end.toFixed(2)}s</span>
+      {duration > 0 && (
+        <div style={{ marginTop: "20px" }}>
+          <Slider
+            min={0}
+            max={duration}
+            value={[start, end]}
+            step={0.1}
+            onInput={handleSliderInput}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>Start: {start.toFixed(2)}s</span>
+            <span>End: {end.toFixed(2)}s</span>
+          </div>
         </div>
-      </div>
+      )}
       <button className="trim-btn" onClick={handleTrim}>
         <FontAwesomeIcon icon={faScissors} />
       </button>
