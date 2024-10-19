@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { setVideoUrl } from "../redux/videoSlice";
 import Header from "./Header";
 import CalendarUpload from "./CalendarUpload";
 import VideoPreview from "./VideoPreview";
@@ -11,8 +12,9 @@ import { faGoogleDrive } from "@fortawesome/free-brands-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 const UploadOptions = () => {
+  const dispatch=useDispatch();
+  const {videoUrl}=useSelector((state)=>state.video);
   const [videoFile, setVideoFile] = useState(null);
-  const [videoPreview, setVideoPreview] = useState(null);
   const { token } = useSelector((state) => state.auth);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [uploadDateTime, setUploadDateTime] = useState(null);
@@ -106,7 +108,7 @@ const UploadOptions = () => {
     const file = event.target.files[0];
     if (file) {
       setVideoFile(file);
-      setVideoPreview(URL.createObjectURL(file));
+      dispatch(setVideoUrl(URL.createObjectURL(file)))
     }
   };
 
@@ -153,7 +155,7 @@ const UploadOptions = () => {
               const file = new File([blob], fileName, { type: blob.type });
               setVideoFile(file);
               const videoUrl = URL.createObjectURL(blob);
-              setVideoPreview(videoUrl);
+              dispatch(setVideoUrl(videoUrl));
               console.log("File fetched and set:", file);
             })
             .catch((error) => console.error("Error fetching file from Drive:", error));
@@ -187,7 +189,7 @@ const UploadOptions = () => {
               const file = event.target.files[0];
               if (file) {
                 setVideoFile(file);
-                setVideoPreview(URL.createObjectURL(file));
+                dispatch(setVideoUrl(URL.createObjectURL(file)));
               }
             }}
           />
@@ -197,9 +199,9 @@ const UploadOptions = () => {
         </div>
 
         <div className="info-container">
-          {videoPreview ? (
+          {videoUrl ? (
             <>
-              <VideoPreview videoUrl={videoPreview} />
+              <VideoPreview/>
               {isLoading && (
                 <p className="success-message">Uploading file... Please wait.</p>
               )}

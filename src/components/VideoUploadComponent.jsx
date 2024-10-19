@@ -78,7 +78,7 @@ const VideoUploadComponent = () => {
       {videoUrl ? (
         <>
           <VideoActions onRetake={handleRetake} onUpload={handleRecordedVideoUpload} />
-          <VideoPreview videoUrl={videoUrl} />
+          <VideoPreview/>
           {successMessage && <p className="success-message">{successMessage}</p>}
           <div className="submit-buttons">
             {/* <button className="button trim-button" onClick={handleTrim}>

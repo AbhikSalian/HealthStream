@@ -1,18 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
 import Slider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScissors } from "@fortawesome/free-solid-svg-icons";
-const ffmpeg = createFFmpeg({
-  corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-  log: true,
-  wasmOptions: {
-    // Disable shared memory (no use of SharedArrayBuffer)
-    useWasmThreads: false,
-  },
-});
-const VideoPreview = ({ videoUrl }) => {
+import { useSelector,useDispatch } from "react-redux";
+import { setVideoUrl } from "../redux/videoSlice";
+const VideoPreview = () => {
+
+  const { videoUrl } = useSelector((state) => state.video);
   const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(10); // Default to 10 seconds for trim length
