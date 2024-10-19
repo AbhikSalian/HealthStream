@@ -33,7 +33,8 @@ const UploadOptions = () => {
       try {
         const response = await fetch(videoUrl);
         const blob = await response.blob();
-        const file = new File([blob], "video.mp4", { type: blob.type });
+        const timestamp = Date.now(); // Get current timestamp in milliseconds
+        const file = new File([blob], `${timestamp}.mp4`, { type: blob.type });
         setVideoFile(file);
       } catch (error) {
         console.error("Error fetching video file from URL:", error);

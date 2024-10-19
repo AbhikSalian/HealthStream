@@ -69,7 +69,7 @@ const VideoPreview = () => {
 
         // Get the current timestamp and format it as a filename
         const timestamp = Date.now(); // Get current timestamp in milliseconds
-        const fileName = `abc.mp4`; // Generate dynamic filename
+        const fileName = `${timestamp}.mp4`; // Generate dynamic filename
 
         // Create a new File object with the dynamic filename
         const file = new File([blob], fileName, { type: blob.type });
