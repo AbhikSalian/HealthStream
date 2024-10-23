@@ -118,11 +118,9 @@ const VideoCapturing = () => {
                 muted
                 playsInline
               />
-            ) : videoUrl ? (
-              <video src={videoUrl} controls className="videoPreview" />
-            ) : (
+            ) : 
               <p>No video recorded</p>
-            )}
+            }
           </div>
           <p className="statusText">
             {isRecording
