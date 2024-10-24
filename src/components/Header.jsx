@@ -33,6 +33,7 @@ const Header = () => {
       dispatch(resetStream());
       googleLogout();
       dispatch(logoutSuccess());
+      dispatch(setVideoUrl(""));
       console.log("Logged out successfully");
     } catch (error) {
       console.error("Logout error: ", error);
