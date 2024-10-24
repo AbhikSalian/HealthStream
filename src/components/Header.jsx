@@ -10,7 +10,7 @@ import {
   faArrowRightFromBracket,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons"; // Import the back arrow icon
-
+import { setVideoUrl } from "../redux/videoSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

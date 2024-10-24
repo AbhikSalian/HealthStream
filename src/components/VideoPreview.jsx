@@ -12,7 +12,7 @@ const VideoPreview = () => {
   const [loaded, setLoaded] = useState(false);
   const { videoUrl } = useSelector((state) => state.video);
   const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(10); // Default to 10 seconds for trim length
+  const [end, setEnd] = useState(1000); // Default to 10 seconds for trim length
   const [trimmedUrl, setTrimmedUrl] = useState("");
   const [duration, setDuration] = useState(0);
   const [isTrimming, setIsTrimming] = useState(false);
@@ -21,7 +21,7 @@ const VideoPreview = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const maxTrimDuration = 10;
   const [trimmedVideoUrl, setTrimmedVideoUrl] = useState("");
-  
+
   useEffect(() => {
     const loadFFmpeg = async () => {
       try {
@@ -149,7 +149,7 @@ const VideoPreview = () => {
     const video = videoRef.current;
     if (video) {
       setDuration(video.duration);
-      setEnd(Math.min(10, video.duration));
+      setEnd(Math.min(1000, video.duration));
     }
   };
 
@@ -190,18 +190,33 @@ const VideoPreview = () => {
             onInput={handleSliderInput}
             className="slider"
           />
-          <div className="time-labels"> {/* Added wrapper for labels */}
-            <span>Start: {start.toFixed(2)}s</span>
-            <span>End: {end.toFixed(2)}s</span>
+          <div className="time-labels">
+            {" "}
+            {/* Added wrapper for labels */}
+            {duration > 0 && duration < 1000 ? (
+              <>
+                <span>Start: {start.toFixed(2)}s</span>
+                <span>End: {end.toFixed(2)}s</span>
+              </>
+            ) : (
+              <>
+                <span>Start: --s</span>
+                <span>End: --s</span>
+              </>
+            )}
           </div>
         </div>
       )}
+
       <button className="trim-btn" onClick={handleTrim}>
-        <FontAwesomeIcon icon={faScissors} />
+        {duration > 0 && duration < 1000 ? (
+          <FontAwesomeIcon icon={faScissors} />
+        ) : (
+          <>Click to load video</>
+        )}
       </button>
     </div>
   );
-  
 };
 
 export default VideoPreview;
